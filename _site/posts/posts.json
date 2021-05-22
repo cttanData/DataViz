@@ -1,0 +1,19 @@
+[
+  {
+    "path": "posts/welcome/",
+    "title": "Welcome to My DataViz Learning",
+    "description": "Welcome to our new blog, My DataViz Learning! A home where DataViz assignment was documented after burning days and nights on it. We hope you enjoy learning what we have to share! :-) YOLO",
+    "author": [
+      {
+        "name": "cttanData",
+        "url": {}
+      }
+    ],
+    "date": "2021-05-22",
+    "categories": [],
+    "contents": "\n\n\n\n\n\n\n",
+    "preview": {},
+    "last_modified": "2021-05-22T10:46:48+08:00",
+    "input_file": {}
+  }
+]
