@@ -1,0 +1,85 @@
+---
+title: "DataViz Makeover 1"
+description: |
+  The first DataViz MakeOver task for ISSS608: Visual Analytics.
+  (Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 & Office 365 Excel)
+draft: false
+author:
+  - name: cttanData
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    theme: happy.css
+    toc_depth: 2 
+    toc_float: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 1.0 Introduction
+The data visualisation below is created by using data under the sub-section of *[Merchandise Trade by Region/Market](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data)* from the Department of Statistics, Singapore.
+
+<center>
+
+![*Figure1.1. Merchandise Trade of Top Six Trading Countries, 2019-2020*](img/DVMO1.png){ width=100% }
+
+</center>
+
+# 2.0 Visualisation Critique
+## 2.1 Clarity
+1.   **Generic Title with NO Lead In**. The title does not convey the intent or message behind the visualisation well as it was just a generic title indicating the merchandise trade of the top 6 trading countries for Singapore from 2019 to 2020. There was no lead in to explain as well and the reader do not know how the top 6 were being determined. i.e. total trade value from 2019 to 2020 or ..? It was unclear whether the intent was to provide information on intra and/or inter comparison of trade balance or total trade transaction values over the study period among the countries. Perhaps it could also be used to convey COVID impact on trade transaction among the top 6 trading countries by comparing pre-COVID (2019) to COVID period (2020).  Given that it only show import and export values over the study period, we presumed it was more interested in trade balance rather than total values. 
+
+2. **Unsynchronised Y Axis**. An unsynchronised Y axis scale for import / export values across all the charts would increase the cognitive load in processing the comparison. By quick view, it was unclear on the ranking order of the top 6 trading countries. It was also difficult to discern the trade balance across the study period for the respective country to Singapore. E.g.  Hong Kong export values seemed to be higher than its import for selected 2019 period. However, the truth was that Hong Kong import was always higher than the export and the misleading perspective was caused by different Y axis scale. 
+
+3. **Inconsistent X Axis**.  The lack of minor markings or gridlines for the X axis have increased the difficulties in determining the exact import/export values over time.  e.g. import values for Oct 2020. It was also interesting to observe that the respective country graph seemed to be of different width from one another even though they (less Japan) had the same study period. Additional confusion was created where Japan has a shorter period as compared to the rest. It made one wonder whether there were no values during the missing period and what were the start and end periods. Thus, eventually, what the charts were trying to compare with a different time period. 
+
+4. **Area or Bar Chart**.  Even though time was a continuous variable, given the data points was collated monthly rather than daily, the suitability of an area chart was put in question. i.e would a bar chart at monthly interval be better.  Nonetheless, this could be debatable. Thus, from the chart, it was difficult to determine the exact import and export values at specific time period.  The X axis lacked the minor marking either by quarterly or monthly. As marking on yearly basis only would pose difficulties to correlate the values across both axes. Moreover, such marking would help to ease the corelation of observed trending over specific events occurred in that time period.
+
+## 2.2 Aesthetic
+1. **Attention to Details**. The font size for country was larger than the title. Moreover, the title alignment seemed to be skewed towards the right due to space extended by the legend. Font size for axis naming and values were relative the same. There was a lack of font typography and hierarchical design. All these made the chart aesthetically non-attractive.
+
+2. **White Space**. Personally, there could be too many white spaces among the country charts and the chart sizes were inconsistent. This could be due to the need to repeat Y axis naming for the respective chart and how the 6 charts were combined.  More space should be allocated to the chart where an enlarge chart could provide better clarity and quality on the details within. 
+
+3. **Colour of Choice**.  Technically, one could not really fault the choice of colour for import and export respectively. Presuming the intention of the chart was to determine the trade difference overtime, then colour choice like pink and blue might be better option. Pink could represent the negative connotation. E.g. Pink for import. When one saw pink colour over the area chart, it would connote import was greater than export, something that the designer would like to give a negative connotation. 
+
+# 3.0 Alternate Visualisation
+
+The proposed alternative design is as follows.
+
+## 3.1 Assumption
+The main intention was to provide a visual understanding on how import and export values of the top 6 trading countries for Singapore were affected by the world-wide COVID pandemic. This would be done by comparing the respective monthly values in 2020 (COVID year) against 2019 (pre-COVID year). Eventually, at annual transaction values.  Information associated with trade balance, year-to-year trade growth, growth from previous month would be secondary objectives and to be done only when time and space permit.
+
+## 3.2 Clarity 
+
+## 3.3 Aesthetic
+
+# 4.0 Visualisation Design
+
+# 5.0 Step-by-Step Guid 
+
+No|Step           |Action 
+--|-------------- |--------
+1| Use excel to remove all unnecessary data points and information associated with the tables for respective worksheet. Only variables associated with the top 6 countries and total transaction values from Jan 19 to Dec 20 would be retained. |
+2| Load the excel file into Tableau Prep Builder. Drag the "Export" worksheet on the left into the canvas. Click "Export" plus "+" icon and select "Pivot" | ![](img/SbS01.png){width=160% }
+3| Select the all the date range field. Drag and drop at the "Pivoted Fields" box.| ![](img/SbS02.png){width=160%}
+4| This is what one will see under "Pivot Results". One could click on the field to verify the pivot.  |![](img/SbS03.png){width=160%}
+5| Double click into  "Total Merchandised Export..." within the "Variables" column under "Pivot Results" field.  Delete the word "Export".|![](img/SbS04.png){width=160%}
+6| Rename the columns.i.e "Variables" to "Country", "Pivot Names" to "Date", "Pivot Values" to "Export Values".  Repeat Step 2 to 6 for "Import" worksheet. Ensure the field "Total Merchandised.." has the same spelling in both sheets|![](img/SbS05.png){width=160%}
+7| Drag either "Pivot" box in the canvas to the other box. A "Join" symbol would appear. Drop the box within. Set the parameters for join under the "Applied Join Clause".  One could check under "Summary of Join Results" to see mismatched values that would be displayed as red colour. The join would be simple unless one made mistake in Step 5, else removed the duplicated columns. |![](img/SbS06.png){width=160%}
+8|Click the "+" icon from the "Join" box in the canvas and select "cleaning".|![](img/SbS07.png){width=160%}
+9|Select "Split Values" and "Automatic Split" from the "Country" Columns to extract the country name from the variables.Remove duplicated column. |![](img/SbS08.png){width=160%}
+10|Change the data type for the respective column. |![](img/SbS09.png){width=160%}
+11|Click the "+" icon from the "Clean" box in the canvas and select "Output". Set the parameters for saving the new data set. |![](img/SbS10.png){width=160%}
+
+# 6.0 Derived Insights
+
+# 7.0 Conclusion
+
+# 8.0 Recommendation
+SOURCE: ENTERPRISE SINGAPORE, DATA generated by SingSTat Table Builder on 17/05/21
+
