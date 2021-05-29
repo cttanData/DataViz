@@ -4,7 +4,6 @@ description: |
   Welcome to our new blog, My DataViz Learning! A home where DataViz assignment was documented after burning days and nights on it. We hope you enjoy learning what we have shared! :-) YOLO
 author:
   - name: cttanData  
-    #url: https://example.com/norajones
     affiliation: Master of IT in Business, Singapore Management University
     affiliation_url: https://scis.smu.edu.sg/master-it-business
 date: 05-22-2021
