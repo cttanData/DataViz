@@ -49,16 +49,23 @@ The data visualisation below is created by using data under the sub-section of *
 
 # 3.0 Alternate Visualisation
 
-The proposed alternative design is as follows.
+The proposed alternative design is as follow:
+
 
 ## 3.1 Assumption
-The main intention was to provide a visual understanding on how import and export values of the top 6 trading countries for Singapore were affected by the world-wide COVID pandemic. This would be done by comparing the respective monthly values in 2020 (COVID year) against 2019 (pre-COVID year). Eventually, at annual transaction values.  Information associated with trade balance, year-to-year trade growth, growth from previous month would be secondary objectives and to be done only when time and space permit.
+The intention is to provide insights on the marco view for total trade transaction values for Singapore and it top 6 trading countries in 2020 as compared to 2019. The visualisation will focus on Year-over-Year growth by comparing on total trade values, respective import and export values in 2020 baseline to 2019. Trend lines will might also be derived but it will not focus on driving insights on trade balance with individual countries.
 
 ## 3.2 Clarity 
 
 ## 3.3 Aesthetic
 
 # 4.0 Visualisation Design
+The final visualisation design can be found on [here](https://public.tableau.com/app/profile/tantiger/viz/DataVizM1/Dashboard1) in Tableau Public.
+
+<center>
+
+![*Figure4.1. Proposed Visualisation Design.](img/DVMO2.png){ width=100% }
+</center>
 
 # 5.0 Step-by-Step Guid 
 
@@ -79,7 +86,7 @@ No|Step           |Action
 13|Create calculated new field to determine the monthly "Total Trade" by summing the Import and Export variables.  |![](img/SbS12.png){width=160%}
 14|Drag the variables "Country" and "Date" into the Columns as Dimension. Filter "Total Merchandised" from the  "Country" dimension. Then change the "YEAR(DATE)" into "MONTH(Date)" to have a monthly x axis wrapped by the Country. Drag the variables "Export 2019", "Export 2020", "Import 2019" and "Import 2020" into the Rows as Measures. 4 x Bar Charts for the respective rows variables will be created. Note that Export Charts are positioned.|![](img/SbS13.png){width=160%}
 15|Select "Dual Axis" from the drop down of "SUM(Export 2020)". This would merge both Export charts. Right click on the Export Y axis and select "Synchronise Axis" to make "Export 2019" and "Export 2020" have similar Y axis scale. Repeat the steps for the Import Measures. |![](img/SbS14.png){width=160%}
-16|Sort the "Country" based on total trade value in a descending order by clicking the "Country" dimension and select the "Sort..." in the drop down, select the parameters based on the displayed image. This is to allow quick visual on the rank order for top 6. It is verified that the similar descending order regardless of period i.e. (2019+2020) or (2020) |![](img/SbS15.png){width=160%}
+16|Sort the "Country" based on total trade value in a descending order by clicking the "Country" dimension and select the "Sort..." in the drop down, select the parameters based on the displayed image. This is to allow quick visual on the rank order for top 6. It is verified that the similar descending order regardless of period i.e. (2019+2020) or (2020) |![](img/SbS15.png){width=100%}
 17|At the Marks area, set the same bar size (to become a vertical line) and colour for the "Sum(Import 2019)" and "Sum(Export 2019)" variables. For 2020 variables, lower the colour opacity but could use different colour to represent import and export bar chart respectively. |![](img/SbS16.png){width=160%}
 18|To improve clarity for the 2019 values, right click on the any 2019 Y axis and select "Move marks to front". | ![](img/SbS17.png){width=160%}
 19|For both Y axes, change the range to Fixed and set the end value to "8,100,000,000". Amend the Axis Title. Set Scale to "Reversed" ONLY for Import Y axis. Intention is to create a symmetrical scale along the x axis to ease comparison.|![](img/SbS18.png){width=160%}
@@ -87,17 +94,39 @@ No|Step           |Action
 21|For chart, one can observe that when "Export 2020" is less than "Export 2019" (i.e.negative Yr-to-Yr import values), the bar chart will change to pink colour. This is to ease the visualisation on impact. Repeat for "Import 2020".|![](img/SbS20.png){width=160%}
 22|Remove unnecessary headers, format the remainder headers, adjust font size, colour, grid lines inking and change the format of "Month(Date)" into "First Letter".|![](img/SbS21.png){width=160%}
 23|Right click on the top chart and select "Annotate -> Area" to add "Export" into the chart. Adjust the colour tone and repeat for the Import Chart. Purpose is to do the enhanced the inking on which bar chart represent export or import. |![](img/SbS22.png){width=160%} 
-24|Download the country flag icon from the internet and save it in the directory:\My Tableau Repository\Shapes\Flags. (Need to create flag folder) Drag the "Country" into Columns shelf in a new sheet. At Marks shelf, change the chart into "Shape" and drag "Country" into "Shapes". Click on the "Shapes" and assigned the respective flag icon to the variable. Repeat for SG flag by using "Total Merchandised" (The visualisation has been designed using resources (country images) from [Flaticon.com](https://www.flaticon.com/) by [Freepik]("https://www.freepik.com")|![](img/SbS23.png){width=160%})
-25|Create the calculated field for "Total Trade 2019" based on the image. Repated for "Total Trade 2020".| ![](img/SbS24.png){width=160%})
-26|Create the calulated field for "Annual Growth" a logic measure to determine whether Trade Value in 2020 is more than Trade Value in 2019. Then calculated field for "Annual Growth%" reference to the image. The purpose is to compute annual Year-over-Year growth for each country.|![](img/SbS25.png){width=160%})
-27|On a new sheet, drag "Country" and "Total Trade 2020" to row shelf. Convert the former to a Dimension with discrete value rather than keep it as Measure. Filter "Country" to only "Total Merchandised" and "Edit Aliases ..." to "SG 2020 Total Trade Value:". Drag "Annual Growth" and "Annual Growth%" into Marks Shelf Colour and Text respectively. The former will create the logic and thus visual contrast to determine whether positive or negative growth. The latter is to compute the growth value. Format the growth value by using customer for number. We will be using icon to represent positive and negative to ease visualisation.|![](img/SbS26.png){width=160%})
-28.Repeat step 27 but with "SG 2020 Total Trade Value:" filter off from "Country". Drag the variables into Column rather than Row Shelf. |![](img/SbS27.png){width=160%})
-29.Create a Year-over-Year Growth for total trade values on each month in 2020. On the new sheet, drag "Country" and "Date" into Columns Shelf with the required filter and setting to month. drag "Annual Growth%" into Marks Shelf Colour and Size respectively as Measure. This is to create the visual cue for negative / positive values with size to indicate the difference magnitude.|![](img/SbS28.png){width=160%})
+24|Download the country flag icon from the internet and save it in the directory:\My Tableau Repository\Shapes\Flags. (Need to create flag folder) Drag the "Country" into Columns shelf in a new sheet. At Marks shelf, change the chart into "Shape" and drag "Country" into "Shapes". Click on the "Shapes" and assigned the respective flag icon to the variable. Repeat for SG flag by using "Total Merchandised" (The visualisation has been designed using resources (country images) from [Flaticon.com](https://www.flaticon.com/) by [Freepik]("https://www.freepik.com")|![](img/SbS23.png){width=160%}
+25|Create the calculated field for "Total Trade 2019" based on the image. Repated for "Total Trade 2020".| ![](img/SbS24.png){width=160%}
+26|Create the calulated field for "Annual Growth" a logic measure to determine whether Trade Value in 2020 is more than Trade Value in 2019. Then calculated field for "Annual Growth%" reference to the image. The purpose is to compute annual Year-over-Year growth for each country.|![](img/SbS25.png){width=160%}
+27|On a new sheet, drag "Country" and "Total Trade 2020" to row shelf. Convert the former to a Dimension with discrete value rather than keep it as Measure. Filter "Country" to only "Total Merchandised" and "Edit Aliases ..." to "SG 2020 Total Trade Value:". Drag "Annual Growth" and "Annual Growth%" into Marks Shelf Colour and Text respectively. The former will create the logic and thus visual contrast to determine whether positive or negative growth. The latter is to compute the growth value. Format the growth value by using customer for number. We will be using icon to represent positive and negative to ease visualisation.|![](img/SbS26.png){width=160%}
+28|Repeat step 27 but with "SG 2020 Total Trade Value:" filter off from "Country". Drag the variables into Column rather than Row Shelf. |![](img/SbS27.png){width=160%}
+29|Create a Year-over-Year Growth for total trade values on each month in 2020. On the new sheet, drag "Country" and "Date" into Columns Shelf with the required filter and setting to month. drag "Annual Growth%" into Marks Shelf Colour and Size respectively as Measure. This is to create the visual cue for negative / positive values with size to indicate the difference magnitude.|![](img/SbS28.png){width=160%}
+30.| Combine all the sheets into a dashboard and realign the sheets to achieve the required aesthatics outcome. Add Title, Lead In and Source and Legend to allow view quick comprehension on the visualisation intent.|![](img/SbS29.png){width=160%}
 
 # 6.0 Derived Insights
 
+<center>
+![*Figure1.1. Visualisation Product for DataViz Makeover 1](img/SbS29.png){ width=100% }
+</center>
+
+The derived insights are:
+
+1. **Mostly Negative in Growth**. The Year-over-Year growth for the total trade values for SG is negative (i.e-5.20%) followed by it main trading partners in descending order Malaysia (-8.46%), USA (-2.47%), Japan(-1.69%) and China (-0.81%). Nonetheless it is surprising that SG has strong positive growth with Taiwan (+13.04%) and Hong Kong (+5.61%). Moreover, the negative growth in China is deemed to be low given it the country is hit with pandemic in early 2020.
+
+2.  **Uneven Impact to Monthly Import and Export Values for the Top 6 Countries**. 
+
++ **China**. Trade is affected generally more on export than import during the first 6 mths of 2020. Thereafter, negative import growth but overall trade growth is postivie due to higher growth in export.
+
++ **Malaysia**. Badly hit during Mar to May 2020 which also the period where both implemented lock down such that direct land trade via Johor has been affected. As Malaysia has been implementing a series lock down even after that, one can observe the continue impact to Export from SG to Malaysia. Overall trade growth has been negative in the last 6 mths of 2020.
+
++ **USA**. 
+
 # 7.0 Conclusion
 
+The visualisation has provided a macro view of total merchandised trade values for SG and its top 6 trading partner. A quick insights on the Year-over-Year growth on annual trade values, import and export values for each trading country with SG under the pandemic COVID 19. It also shed marco insight on monthly growth in 2020 showing signs of recovery for selected countries. Nonetheless, the future is still uncertain in this pandemic era as country about subsequent COVID attack. Effectively, trade economics can be affected by numerous factors and thus without deep research,one cannot confidently concluded the negative growth can be fully attributed to the pandemic while selected incidents with Malaysia are attributable.
+
 # 8.0 Recommendation
-SOURCE: ENTERPRISE SINGAPORE, DATA generated by SingSTat Table Builder on 17/05/21
+
+Further studies shall gain better understanding on the negative growth can focus on 2 areas as follows:
+
+1. Micro View on Merchandised Trade. Focus research on 
 
