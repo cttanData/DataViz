@@ -6,14 +6,14 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-05-30T15:46:53+08:00"
+      "last_modified": "2021-05-30T15:56:22+08:00"
     },
     {
       "path": "index.html",
       "title": "My DataViz Learning Jounery Blog",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-05-30T15:46:54+08:00"
+      "last_modified": "2021-05-30T15:56:23+08:00"
     }
   ],
   "collections": ["posts/posts.json"]
