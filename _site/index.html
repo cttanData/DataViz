@@ -2185,7 +2185,40 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   /*-- Additional custom styles --*/
   /* Add any additional CSS rules below                      */
-  </style>
+  
+  /*------------Table of Contents (TOC)----------- */
+  
+  
+  .tocify {
+    border: none;   /*Removes border */
+    border-radius: 0px; /* Gets rid of rounded corners on TOC */
+    font-size: 16px;
+  }
+  
+  .tocify ul, .tocify li { /* Increases spacing between TOC headers*/
+      line-height: 25px !important;
+  }
+  
+  .tocify ul {
+    border-right: solid 1px #eee; /* Thin right border on TOC list */
+  }
+  
+  /* Active TOC links*/
+  
+  .list-group-item.active, 
+  .list-group-item.active:hover{
+    color: #787878;
+    background-color: #ffd8db;
+    border-color: #ccc;
+  }
+  
+  /* Hovered TOC links*/
+  
+  .list-group-item:hover { 
+    color: #787878;
+    background-color: #ffd8db;
+    border: none;
+  }</style>
   <style type="text/css">
   /* base style */
   

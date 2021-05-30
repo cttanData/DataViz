@@ -5,7 +5,7 @@ description: |
   (Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 & Office 365 Excel)
 draft: false
 author:
-  - name: cttanData
+  - name: Choo T Tan
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
   distill::distill_article:
