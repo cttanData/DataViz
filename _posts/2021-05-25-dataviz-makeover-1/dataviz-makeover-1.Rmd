@@ -11,9 +11,9 @@ output:
   distill::distill_article:
     self_contained: false
     toc: true
-    theme: happy.css
     toc_depth: 2 
     toc_float: true
+    
 ---
 
 

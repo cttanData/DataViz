@@ -86,22 +86,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>PLAYwData: About this blog</title>
+  <title>PLaywData: About this blog</title>
   
   <meta property="description" itemprop="description" content="Some additional details about the blog"/>
   
   
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="PLAYwData: About this blog"/>
+  <meta property="og:title" content="PLaywData: About this blog"/>
   <meta property="og:type" content="article"/>
   <meta property="og:description" content="Some additional details about the blog"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="PLAYwData"/>
+  <meta property="og:site_name" content="PLaywData"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="PLAYwData: About this blog"/>
+  <meta property="twitter:title" content="PLaywData: About this blog"/>
   <meta property="twitter:description" content="Some additional details about the blog"/>
   
   <!--/radix_placeholder_meta_tags-->
@@ -2148,7 +2148,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   /*-- ARTICLE METADATA --*/
   d-byline {
-    --heading-size:    1.0rem;
+    --heading-size:    0.6rem;
     --heading-color:   rgba(0, 0, 0, 0.5);
     --body-size:       0.8rem;
     --body-color:      rgba(0, 0, 0, 0.8);
@@ -2172,16 +2172,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /* These properties only apply to Distill sites and blogs  */
   
   .distill-site-header {
+    --padding:          40px 0px;
     --title-size:       20px;
     --text-color:       #0F2E3D;
-    --text-size:        18px;
-    --hover-color:      #dd424c;
-    --bkgd-color:       #FFE9D8;
+    --text-size:        16px;
+    --text-transform:   uppercase;
+    --hover-color:      #DD424C;
+    --bkgd-color:       #FE6486;
   }
   
   .distill-site-footer {
     --text-color:       rgba(255, 255, 255, 0.8);
-    --text-size:        15px;
+    --text-size:        14px;
     --hover-color:      white;
     --bkgd-color:       #0F2E3D;
   }
@@ -2191,11 +2193,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   /*------------Table of Contents (TOC)----------- */
   
+  /* Makes TOC sticky (needed if you used a hero image) */
+  
+  .row-fluid{
+    display: flex; /* Necessary for sticky TOC*/
+  
+  }
   
   .tocify {
+    position: -webkit-sticky;
+    position: sticky; 
+    top: 120px; /*Controls where TOC stops when sticky */
+    width: 100% !important;
     border: none;   /*Removes border */
     border-radius: 0px; /* Gets rid of rounded corners on TOC */
-    font-size: 16px;
+  
   }
   
   .tocify ul, .tocify li { /* Increases spacing between TOC headers*/
@@ -2206,21 +2218,23 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     border-right: solid 1px #eee; /* Thin right border on TOC list */
   }
   
-  /* Active TOC links*/
+     /* TOC links */
   
-  .list-group-item.active, 
-  .list-group-item.active:hover{
-    color: #787878;
-    background-color: #ffd8db;
-    border-color: #ccc;
+  .list-group-item {
+      color: #7b8a8b;
+      font-size: 16px;
   }
   
-  /* Hovered TOC links*/
+  .list-group-item.active {
+      color: #131b23;
+      background-color: #FF6C74;
+      border: none;
+  }
   
-  .list-group-item:hover { 
-    color: #787878;
-    background-color: #ffd8db;
-    border: none;
+  .list-group-item:hover, 
+  .list-group-item.active:hover {
+      color: #7771F7;
+      background-color:#FC9D9A;
   }</style>
   <style type="text/css">
   /* base style */
@@ -2404,7 +2418,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
-<a href="index.html" class="title">PLAYwData</a>
+<a href="index.html" class="title">PLaywData</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">

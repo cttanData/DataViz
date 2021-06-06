@@ -1,8 +1,8 @@
 name: "DataViz Assignment"
-title: "PLAYwData"
+title: "PLaywData"
+theme: happy.css
 description: |
   My DataViz Blog as part of SMU requirements
-theme: happy.css
 output_dir: "_site"
 navbar:
   right:

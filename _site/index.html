@@ -86,20 +86,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>PLAYwData: My DataViz Learning Jounery</title>
+  <title>PLaywData: My DataViz Learning Jounery</title>
   
   
   
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="PLAYwData: My DataViz Learning Jounery"/>
+  <meta property="og:title" content="PLaywData: My DataViz Learning Jounery"/>
   <meta property="og:type" content="article"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="PLAYwData"/>
+  <meta property="og:site_name" content="PLaywData"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="PLAYwData: My DataViz Learning Jounery"/>
+  <meta property="twitter:title" content="PLaywData: My DataViz Learning Jounery"/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
@@ -2145,7 +2145,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   /*-- ARTICLE METADATA --*/
   d-byline {
-    --heading-size:    1.0rem;
+    --heading-size:    0.6rem;
     --heading-color:   rgba(0, 0, 0, 0.5);
     --body-size:       0.8rem;
     --body-color:      rgba(0, 0, 0, 0.8);
@@ -2169,16 +2169,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /* These properties only apply to Distill sites and blogs  */
   
   .distill-site-header {
+    --padding:          40px 0px;
     --title-size:       20px;
     --text-color:       #0F2E3D;
-    --text-size:        18px;
-    --hover-color:      #dd424c;
-    --bkgd-color:       #FFE9D8;
+    --text-size:        16px;
+    --text-transform:   uppercase;
+    --hover-color:      #DD424C;
+    --bkgd-color:       #FE6486;
   }
   
   .distill-site-footer {
     --text-color:       rgba(255, 255, 255, 0.8);
-    --text-size:        15px;
+    --text-size:        14px;
     --hover-color:      white;
     --bkgd-color:       #0F2E3D;
   }
@@ -2188,11 +2190,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   /*------------Table of Contents (TOC)----------- */
   
+  /* Makes TOC sticky (needed if you used a hero image) */
+  
+  .row-fluid{
+    display: flex; /* Necessary for sticky TOC*/
+  
+  }
   
   .tocify {
+    position: -webkit-sticky;
+    position: sticky; 
+    top: 120px; /*Controls where TOC stops when sticky */
+    width: 100% !important;
     border: none;   /*Removes border */
     border-radius: 0px; /* Gets rid of rounded corners on TOC */
-    font-size: 16px;
+  
   }
   
   .tocify ul, .tocify li { /* Increases spacing between TOC headers*/
@@ -2203,21 +2215,23 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     border-right: solid 1px #eee; /* Thin right border on TOC list */
   }
   
-  /* Active TOC links*/
+     /* TOC links */
   
-  .list-group-item.active, 
-  .list-group-item.active:hover{
-    color: #787878;
-    background-color: #ffd8db;
-    border-color: #ccc;
+  .list-group-item {
+      color: #7b8a8b;
+      font-size: 16px;
   }
   
-  /* Hovered TOC links*/
+  .list-group-item.active {
+      color: #131b23;
+      background-color: #FF6C74;
+      border: none;
+  }
   
-  .list-group-item:hover { 
-    color: #787878;
-    background-color: #ffd8db;
-    border: none;
+  .list-group-item:hover, 
+  .list-group-item.active:hover {
+      color: #7771F7;
+      background-color:#FC9D9A;
   }</style>
   <style type="text/css">
   /* base style */
@@ -2401,7 +2415,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
-<a href="index.html" class="title">PLAYwData</a>
+<a href="index.html" class="title">PLaywData</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
@@ -2549,6 +2563,24 @@ function init_posts_list() {
 <div class="posts-container posts-apply-limit l-page">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="My DataViz Learning Jounery">My DataViz Learning Jounery</h1>
+<a href="posts/2021-05-25-dataviz-makeover-1/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<div class="metadata">
+<div class="publishedDate">June 6, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Choo T Tan</div>
+</div>
+</div>
+<div class="thumbnail">
+<img/>
+</div>
+<div class="description">
+<h2>DataViz Makeover 1</h2>
+<div class="dt-tags"></div>
+<p>The first DataViz MakeOver task for ISSS608: Visual Analytics.
+(Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 &amp; Office 365 Excel)</p>
+</div>
+</a>
 <a href="posts/2021-06-06-dataviz-makeover-2/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":[]}</script>
 <div class="metadata">
@@ -2567,10 +2599,10 @@ function init_posts_list() {
 (Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 &amp; Office 365 Excel)</p>
 </div>
 </a>
-<a href="posts/2021-05-25-dataviz-makeover-1/" class="post-preview">
+<a href="posts/welcome/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":[]}</script>
 <div class="metadata">
-<div class="publishedDate">May 30, 2021</div>
+<div class="publishedDate">May 22, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Choo T Tan</div>
 </div>
@@ -2579,27 +2611,9 @@ function init_posts_list() {
 <img/>
 </div>
 <div class="description">
-<h2>DataViz Makeover 1</h2>
+<h2>Welcome to My Blog</h2>
 <div class="dt-tags"></div>
-<p>The first DataViz MakeOver task for ISSS608: Visual Analytics.
-(Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 &amp; Office 365 Excel)</p>
-</div>
-</a>
-<a href="posts/welcome/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":[]}</script>
-<div class="metadata">
-<div class="publishedDate">May 22, 2021</div>
-<div class="dt-authors">
-<div class="dt-author">cttanData</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Welcome to My DataViz Learning Journey</h2>
-<div class="dt-tags"></div>
-<p>Welcome to our new blog, My DataViz Learning! A home where DataViz assignment was documented after burning days and nights on it. We hope you enjoy learning what we have shared! :-) YOLO</p>
+<p>Welcome to blog, My DataViz Learning Journey! A home where DataViz assignment was documented after burning days and nights on it. Hope that you enjoy learning what has been shared! :-) YOLO</p>
 </div>
 </a>
 </div>

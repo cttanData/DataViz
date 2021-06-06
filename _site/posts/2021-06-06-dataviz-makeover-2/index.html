@@ -86,7 +86,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-<title>PLAYwData: DataViz Makeover 2</title>
+<title>PLaywData: DataViz Makeover 2</title>
 
 <meta property="description" itemprop="description" content="The second DataViz MakeOver task for ISSS608: Visual Analytics.&#10;(Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 &amp; Office 365 Excel)"/>
 
@@ -97,15 +97,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta name="article:author" content="Choo T Tan"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="PLAYwData: DataViz Makeover 2"/>
+<meta property="og:title" content="PLaywData: DataViz Makeover 2"/>
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="The second DataViz MakeOver task for ISSS608: Visual Analytics.&#10;(Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 &amp; Office 365 Excel)"/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:site_name" content="PLAYwData"/>
+<meta property="og:site_name" content="PLaywData"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary"/>
-<meta property="twitter:title" content="PLAYwData: DataViz Makeover 2"/>
+<meta property="twitter:title" content="PLaywData: DataViz Makeover 2"/>
 <meta property="twitter:description" content="The second DataViz MakeOver task for ISSS608: Visual Analytics.&#10;(Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 &amp; Office 365 Excel)"/>
 
 <!--/radix_placeholder_meta_tags-->
@@ -117,7 +117,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/DVMO1.jpg"]}
+  {"type":"character","attributes":{},"value":["dataviz-makeover-2_files/anchor-4.2.2/anchor.min.js","dataviz-makeover-2_files/bowser-1.9.3/bowser.min.js","dataviz-makeover-2_files/distill-2.2.21/template.v2.js","dataviz-makeover-2_files/jquery-1.11.3/jquery.min.js","dataviz-makeover-2_files/popper-2.6.0/popper.min.js","dataviz-makeover-2_files/tippy-6.2.7/tippy-bundle.umd.min.js","dataviz-makeover-2_files/tippy-6.2.7/tippy-light-border.css","dataviz-makeover-2_files/tippy-6.2.7/tippy.css","dataviz-makeover-2_files/tippy-6.2.7/tippy.umd.min.js","dataviz-makeover-2_files/webcomponents-2.0.0/webcomponents.js","img/DVMO1.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2156,7 +2156,7 @@ html {
 
 /*-- ARTICLE METADATA --*/
 d-byline {
-  --heading-size:    1.0rem;
+  --heading-size:    0.6rem;
   --heading-color:   rgba(0, 0, 0, 0.5);
   --body-size:       0.8rem;
   --body-color:      rgba(0, 0, 0, 0.8);
@@ -2180,16 +2180,18 @@ d-appendix {
 /* These properties only apply to Distill sites and blogs  */
 
 .distill-site-header {
+  --padding:          40px 0px;
   --title-size:       20px;
   --text-color:       #0F2E3D;
-  --text-size:        18px;
-  --hover-color:      #dd424c;
-  --bkgd-color:       #FFE9D8;
+  --text-size:        16px;
+  --text-transform:   uppercase;
+  --hover-color:      #DD424C;
+  --bkgd-color:       #FE6486;
 }
 
 .distill-site-footer {
   --text-color:       rgba(255, 255, 255, 0.8);
-  --text-size:        15px;
+  --text-size:        14px;
   --hover-color:      white;
   --bkgd-color:       #0F2E3D;
 }
@@ -2199,11 +2201,21 @@ d-appendix {
 
 /*------------Table of Contents (TOC)----------- */
 
+/* Makes TOC sticky (needed if you used a hero image) */
+
+.row-fluid{
+  display: flex; /* Necessary for sticky TOC*/
+
+}
 
 .tocify {
+  position: -webkit-sticky;
+  position: sticky; 
+  top: 120px; /*Controls where TOC stops when sticky */
+  width: 100% !important;
   border: none;   /*Removes border */
   border-radius: 0px; /* Gets rid of rounded corners on TOC */
-  font-size: 16px;
+
 }
 
 .tocify ul, .tocify li { /* Increases spacing between TOC headers*/
@@ -2214,21 +2226,23 @@ d-appendix {
   border-right: solid 1px #eee; /* Thin right border on TOC list */
 }
 
-/* Active TOC links*/
+   /* TOC links */
 
-.list-group-item.active, 
-.list-group-item.active:hover{
-  color: #787878;
-  background-color: #ffd8db;
-  border-color: #ccc;
+.list-group-item {
+    color: #7b8a8b;
+    font-size: 16px;
 }
 
-/* Hovered TOC links*/
+.list-group-item.active {
+    color: #131b23;
+    background-color: #FF6C74;
+    border: none;
+}
 
-.list-group-item:hover { 
-  color: #787878;
-  background-color: #ffd8db;
-  border: none;
+.list-group-item:hover, 
+.list-group-item.active:hover {
+    color: #7771F7;
+    background-color:#FC9D9A;
 }</style>
 <style type="text/css">
 /* base style */
@@ -2413,7 +2427,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
-<a href="../../index.html" class="title">PLAYwData</a>
+<a href="../../index.html" class="title">PLaywData</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
