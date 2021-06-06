@@ -1,9 +1,9 @@
 ---
-title: "Welcome to My DataViz Learning Journey"
+title: "Welcome to My Blog"
 description: |
-  Welcome to our new blog, My DataViz Learning! A home where DataViz assignment was documented after burning days and nights on it. We hope you enjoy learning what we have shared! :-) YOLO
+  Welcome to blog, My DataViz Learning Journey! A home where DataViz assignment was documented after burning days and nights on it. Hope that you enjoy learning what has been shared! :-) YOLO
 author:
-  - name: cttanData  
+  - name: Choo T Tan 
     affiliation: Master of IT in Business, Singapore Management University
     affiliation_url: https://scis.smu.edu.sg/master-it-business
 date: 05-22-2021
