@@ -8,10 +8,7 @@ author:
     affiliation_url: https://scis.smu.edu.sg/master-it-business
 date: 05-22-2021
 output:
-  distill::distill_article:
-    self_contained: false
-    
-
+  distill::distill_article
 ---
 
 ```{r setup, include=FALSE}
