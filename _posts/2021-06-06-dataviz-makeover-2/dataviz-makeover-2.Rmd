@@ -1,0 +1,33 @@
+---
+title: "DataViz Makeover 2"
+description: |
+  The second DataViz MakeOver task for ISSS608: Visual Analytics.
+  (Tools: Tableau Desktop 2021.1, Tableau Prep Builder 2021.1 & Office 365 Excel)
+draft: flase
+author:
+  - name: Choo T Tan
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    theme: happy.css
+    toc_depth: 2 
+    toc_float: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 1.0 Introduction
+The data visualisation below is created by using data under the sub-section of *[Merchandise Trade by Region/Market](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data)* from the Department of Statistics, Singapore.
+
+<center>
+
+![*Figure1.1. Merchandise Trade of Top 10 Trading Countries for Singapore*](img/DVMO1.jpg){ width=100% }
+
+</center>
+
+
