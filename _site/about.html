@@ -2195,47 +2195,65 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   /* Makes TOC sticky (needed if you used a hero image) */
   
-  .row-fluid{
-    display: flex; /* Necessary for sticky TOC*/
-  
-  }
+  <style type="text/css">
   
   .tocify {
-    position: -webkit-sticky;
-    position: sticky; 
-    top: 120px; /*Controls where TOC stops when sticky */
-    width: 100% !important;
-    border: none;   /*Removes border */
-    border-radius: 0px; /* Gets rid of rounded corners on TOC */
-  
+  width: 20%;
+  max-height: 90%;
+  overflow: auto;
+  margin-left: 2%;
+  position: fixed;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   }
   
-  .tocify ul, .tocify li { /* Increases spacing between TOC headers*/
-      line-height: 25px !important;
+  .tocify ul, .tocify li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  line-height: 30px;
   }
   
-  .tocify ul {
-    border-right: solid 1px #eee; /* Thin right border on TOC list */
+  .tocify-header {
+  text-indent: 10px;
   }
   
-     /* TOC links */
-  
-  .list-group-item {
-      color: #7b8a8b;
-      font-size: 16px;
+  .tocify-subheader {
+  text-indent: 20px;
+  display: none;
   }
   
-  .list-group-item.active {
-      color: #131b23;
-      background-color: #FF6C74;
-      border: none;
+  .tocify-subheader li {
+  font-size: 12px;
   }
   
-  .list-group-item:hover, 
-  .list-group-item.active:hover {
-      color: #7771F7;
-      background-color:#FC9D9A;
-  }</style>
+  .tocify-subheader .tocify-subheader {
+  text-indent: 30px;
+  }
+  .tocify-subheader .tocify-subheader .tocify-subheader {
+  text-indent: 40px;
+  }
+  .tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader {
+  text-indent: 50px;
+  }
+  .tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader {
+  text-indent: 60px;
+  }
+  
+  .tocify .tocify-item > a, .tocify .nav-list .nav-header {
+  margin: 0px;
+  }
+  
+  .tocify .tocify-item a, .tocify .list-group-item {
+  padding: 5px;
+  }
+  .tocify .nav-pills > li {
+  float: none;
+  }
+  
+  
+  </style></style>
   <style type="text/css">
   /* base style */
   
