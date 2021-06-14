@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["dataviz-makeover-2_files/anchor-4.2.2/anchor.min.js","dataviz-makeover-2_files/bowser-1.9.3/bowser.min.js","dataviz-makeover-2_files/distill-2.2.21/template.v2.js","dataviz-makeover-2_files/jquery-1.11.3/jquery.min.js","dataviz-makeover-2_files/popper-2.6.0/popper.min.js","dataviz-makeover-2_files/tippy-6.2.7/tippy-bundle.umd.min.js","dataviz-makeover-2_files/tippy-6.2.7/tippy-light-border.css","dataviz-makeover-2_files/tippy-6.2.7/tippy.css","dataviz-makeover-2_files/tippy-6.2.7/tippy.umd.min.js","dataviz-makeover-2_files/webcomponents-2.0.0/webcomponents.js","img/DVMO1.jpg"]}
+  {"type":"character","attributes":{},"value":["dataviz-makeover-2_files/anchor-4.2.2/anchor.min.js","dataviz-makeover-2_files/bowser-1.9.3/bowser.min.js","dataviz-makeover-2_files/distill-2.2.21/template.v2.js","dataviz-makeover-2_files/jquery-1.11.3/jquery.min.js","dataviz-makeover-2_files/popper-2.6.0/popper.min.js","dataviz-makeover-2_files/tippy-6.2.7/tippy-bundle.umd.min.js","dataviz-makeover-2_files/tippy-6.2.7/tippy-light-border.css","dataviz-makeover-2_files/tippy-6.2.7/tippy.css","dataviz-makeover-2_files/tippy-6.2.7/tippy.umd.min.js","dataviz-makeover-2_files/webcomponents-2.0.0/webcomponents.js","img/01.png","img/02.png","img/03.png","img/04.png","img/05.png","img/06.png","img/07.png","img/08.png","img/09.png","img/10.png","img/11.png","img/12.png","img/13.png","img/14.png","img/15.png","img/16.png","img/17.png","img/DVMO1.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1491,7 +1491,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><a href="#clarity-aesthetic">3.2 Clarity &amp; Aesthetic</a></li>
 </ul></li>
 <li><a href="#visualisation-design">4.0 Visualisation Design</a></li>
-<li><a href="#step-by-step-guide">5.0 Step-by-Step Guide</a></li>
+<li><a href="#step-by-step-guide">5.0 Step-by-Step Guide</a><ul>
+<li><a href="#data-prepartion">5.1 Data Prepartion</a></li>
+<li><a href="#main-chart---bubble-plot">5.2 Main Chart - Bubble Plot</a></li>
+<li><a href="#supporting-chart---gant-area-chart">5.3 Supporting Chart - Gant &amp; Area Chart</a></li>
+<li><a href="#trending-chart---horizon-chart">5.4 Trending Chart - Horizon Chart</a></li>
+<li><a href="#interactive-dashboard">5.5 Interactive Dashboard</a></li>
+</ul></li>
 </ul>
 </nav>
 </div>
@@ -1532,6 +1538,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1 id="visualisation-design">4.0 Visualisation Design</h1>
 <p>The final visualisation design can be found on <a href="https://public.tableau.com/app/profile/tantiger/viz/DataVizM1/">here</a> in Tableau Public.</p>
 <h1 id="step-by-step-guide">5.0 Step-by-Step Guide</h1>
+<h2 id="data-prepartion">5.1 Data Prepartion</h2>
 <table>
 <colgroup>
 <col style="width: 8%" />
@@ -1548,66 +1555,106 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Use excel to remove all unnecessary data points and information associated with the tables for respective worksheet. Only variables associated with the top 6 countries plus “Total Merchandised…” from Jan 19 to Dec 20 shall be retained.</td>
+<td>Use excel to remove all unnecessary data points and information associated with the tables for respective worksheet. Renamed the worksheet to “Import” and “Export” respectively. Keep all the countries parameters and data associated from Jan 10 to Dec 20.</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td>Load the excel file into Tableau Prep Builder. Drag the “Export” worksheet on the left into the canvas. Click the “+” icon for Export and select “Pivot”</td>
-<td><img src="img/SbS01.png" style="width:160.0%" /></td>
+<td>Load the excel file into Tableau Prep Builder. Drag the worksheets on the left into the canvas.</td>
+<td><img src="img/01.png" style="width:160.0%" /></td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td>Select all the date range field. Drag and drop at the “Pivoted Fields” box.</td>
-<td><img src="img/SbS02.png" style="width:160.0%" /></td>
+<td>Click the “+” icon for Export and select “Pivot”.</td>
+<td><img src="img/02.png" style="width:160.0%" /></td>
 </tr>
 <tr class="even">
 <td>4</td>
-<td>This is what one will see under “Pivot Results”. One could click on the field to verify the pivot.</td>
-<td><img src="img/SbS03.png" style="width:160.0%" /></td>
+<td>Select all the date range field. Drag and drop at the “Pivoted Fields” box.</td>
+<td><img src="img/03.png" style="width:160.0%" /></td>
 </tr>
 <tr class="odd">
 <td>5</td>
-<td>Double click into “Total Merchandised Export…” within the “Variables” column under “Pivot Results” field. Delete the word “Export”.</td>
-<td><img src="img/SbS04.png" style="width:160.0%" /></td>
+<td>This is what one will see under “Pivot Results”. One could click on the field to verify the pivot.</td>
+<td><img src="img/04.png" style="width:160.0%" /></td>
 </tr>
 <tr class="even">
 <td>6</td>
-<td>Rename the columns.i.e “Variables” to “Country”, “Pivot Names” to “Date”, “Pivot Values” to “Export Values”. Repeat Step 2 to 6 for “Import” worksheet. Ensure the field “Total Merchandised..” has the same spelling in both sheets</td>
-<td><img src="img/SbS05.png" style="width:160.0%" /></td>
+<td>Double click into “Total Merchandised Export…” within the “Variables” column under “Pivot Results” field and replace it with “Singapore”.</td>
+<td><img src="img/05.png" style="width:160.0%" /></td>
 </tr>
 <tr class="odd">
 <td>7</td>
-<td>Drag either “Pivot” box in the canvas to the other box. A “Join” symbol will appear. Drop the box within. Set the parameters for join under the “Applied Join Clause”. One can check under “Summary of Join Results” to see mismatched values that will display as red colour. The join will be simple unless one made mistake in Step 5, else remove the duplicated columns.</td>
-<td><img src="img/SbS06.png" style="width:160.0%" /></td>
+<td>Click the “+” icon for Pivot1 and select “Clean Step”.</td>
+<td><img src="img/06.png" style="width:160.0%" /></td>
 </tr>
 <tr class="even">
 <td>8</td>
-<td>Click the “+” icon from the “Join” box in the canvas and select “cleaning”.</td>
-<td><img src="img/SbS07.png" style="width:160.0%" /></td>
+<td>Rename the columns in the work areas. i.e. “Variables” to “Country”, “Pivot Names” to “Date”, “Pivot Values” to “Export Values”. Change “Export” from string to number variables. Repeat Step 3 to 8 for “Import” worksheet.</td>
+<td><img src="img/07.png" style="width:160.0%" /></td>
 </tr>
 <tr class="odd">
 <td>9</td>
-<td>Select “Split Values” and “Automatic Split” from the “Country” Column to extract the country name from the variable. Remove duplicated columns.</td>
-<td><img src="img/SbS08.png" style="width:160.0%" /></td>
+<td>Drag either “Pivot” box in the canvas to the other box. A “Join” symbol will appear. Drop the box within. Set the parameters as in the image for join under the “Applied Join Clause”. One can check under “Summary of Join Results” to see mismatched values that will display as red colour. As the intention is to bring all data over for analysis, select “Joint Type:right” by clicking the shaded region in the circle.</td>
+<td><img src="img/08.png" style="width:160.0%" /></td>
 </tr>
 <tr class="even">
 <td>10</td>
-<td>Change the data type for the respective column.</td>
-<td><img src="img/SbS09.png" style="width:160.0%" /></td>
+<td>Similar to step 7, select “Clean” for the “Join” box in the canvas.</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td>11</td>
-<td>Click the “+” icon from the “Clean” box in the canvas and select “Output”. Set the parameters for saving the new data set.</td>
-<td><img src="img/SbS10.png" style="width:160.0%" /></td>
+<td>Remove duplicated columns with less variables since it is a Join Right operations. For “Country” column, perform “Clean” to remove extra space.</td>
+<td><img src="img/09.png" style="width:160.0%" /></td>
 </tr>
 <tr class="even">
 <td>12</td>
-<td>Load the saved excel into Tableau Desktop and drag the saved sheet into the canvas. Create calculated new field from Import and Export Variables to determine the new variables of Import and Export for year 2019 and 2020 respective. eg “Import 2019”. Multiplied by 1000 to account for the normalised value of “thousand” (removed in Step 9) Step 3 could also be used to instead of this step by pivoting the variable by year.</td>
-<td><img src="img/SbS11.png" style="width:160.0%" /></td>
+<td>On “Country” Column, select “Split Values” and “Custom Split”. This is to extract the country name from the variable.</td>
+<td><img src="img/10.png" style="width:160.0%" /></td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>From the Custom Split dialogue, type blank " " into the separator field and select “2” as field and click “Split”.</td>
+<td><img src="img/11.png" style="width:160.0%" /></td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Two new columns will be created where one has only the country name and the other the remaining variables. Amend the second column to ensure it has only “thousand” and “millions” as parameters.</td>
+<td><img src="img/12.png" style="width:160.0%" /></td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>The focus next is to clean up and normalise the “Import” and “Export” columns. First,ensure the view state is in “Detail”. Then, double click into the null row and replaced it with “0”. One notice a “paper clip” symbol beside the new merged row.</td>
+<td><img src="img/13.png" style="width:160.0%" /></td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Then click into “Export” to “Create Calculated Field” by custom.</td>
+<td><img src="img/14.png" style="width:160.0%" /></td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>Type in the formulate show. Intent is to normalise the values to baseline since some countries base at million while mostly are in thousand. Remove the previous columns and rename the new column. Repeat the Step 15 - 17 for “Import” column.</td>
+<td><img src="img/15.png" style="width:160.0%" /></td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>Create new calculated field with naming “Total Values” which is the sum of import and export values.</td>
+<td><img src="img/16.png" style="width:160.0%" /></td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>Click the “+” icon from the “Clean” box in the canvas and select “Output”. Set the parameters for saving the new data set as hyper for subsequent usage in Tableau Desktop.</td>
+<td><img src="img/17.png" style="width:160.0%" /></td>
 </tr>
 </tbody>
 </table>
+<h2 id="main-chart---bubble-plot">5.2 Main Chart - Bubble Plot</h2>
+<p>1| Load the saved hyper excel into Tableau Desktop and drag the saved sheet into the canvas. Create calculated new field from Import and Export Variables to determine the new variables of Import and Export for year 2019 and 2020 respective. eg “Import 2019”. Multiplied by 1000 to account for the normalised value of “thousand” (removed in Step 9) Step 3 could also be used to instead of this step by pivoting the variable by year.|<img src="img/SbS11.png" style="width:160.0%" /></p>
+<h2 id="supporting-chart---gant-area-chart">5.3 Supporting Chart - Gant &amp; Area Chart</h2>
+<h2 id="trending-chart---horizon-chart">5.4 Trending Chart - Horizon Chart</h2>
+<h2 id="interactive-dashboard">5.5 Interactive Dashboard</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
