@@ -85,8 +85,8 @@ The final visualisation design can be found on [here](https://public.tableau.com
 No|Step           |Action 
 --|-------------- |--------
 1| Use excel to remove all unnecessary data points and information associated with the tables for respective worksheet. Renamed the worksheet to "Import" and "Export" respectively. Keep all the countries parameters and data associated from Jan 10 to Dec 20. |
-2| Load the excel file into Tableau Prep Builder. Drag the worksheets on the left into the canvas.| ![](img/01.png){width=160% }
-3| Click the "+" icon for Export and select "Pivot".|![](img/02.png){width=160% }
+2| Load the excel file into Tableau Prep Builder. Drag the worksheets on the left into the canvas.| ![](img/01.png){width=160%}
+3| Click the "+" icon for Export and select "Pivot".|![](img/02.png){width=160%}
 4| Select all the date range field. Drag and drop at the "Pivoted Fields" box.| ![](img/03.png){width=160%}
 5| This is what one will see under "Pivot Results". One could click on the field to verify the pivot.  |![](img/04.png){width=160%}
 6| Double click into  "Total Merchandised Export..." within the "Variables" column under "Pivot Results" field and replace it with "Singapore".|![](img/05.png){width=160%}
@@ -96,19 +96,34 @@ No|Step           |Action
 10| Similar to step 7, select "Clean" for the "Join" box in the canvas.
 11| Remove duplicated columns with less variables since it is a Join Right operations. For "Country" column, perform "Clean" to remove extra space.|![](img/09.png){width=160%}
 12| On "Country" Column, select "Split Values" and "Custom Split". This is to extract the country name from the variable. |![](img/10.png){width=160%}
-13| From the Custom Split dialogue, type blank " " into the separator field and select "2" as field and click "Split". |![](img/11.png){width=160%} 
-14| Two new columns will be created where one has only the country name and the other the remaining variables. Amend the second column to ensure it has only "thousand" and "millions" as parameters. |![](img/12.png){width=160%} 
+13| From the Custom Split dialogue, type blank " " into the separator field and select "2" as field and click "Split". |![](img/11.png){width=160%}
+14| Two new columns will be created where one has only the country name and the other the remaining variables. Amend the second column to ensure it has only "thousand" and "millions" as parameters. |![](img/12.png){width=160%}
 15| The focus next is to clean up and normalise the "Import" and "Export" columns. First,ensure the view state is in "Detail". Then, double click into the null row and replaced it with "0". One notice a "paper clip" symbol beside the new merged row. |![](img/13.png){width=160%}
-16| Then click into "Export" to "Create Calculated Field" by custom. |![](img/14.png){width=160%} 
-17| Type in the formulate show. Intent is to normalise the values to baseline since some countries base at million while mostly are in thousand. Remove the previous columns and rename the new column. Repeat the Step 15 - 17 for "Import" column. |![](img/15.png){width=160%} 
-18| Create new calculated field with naming "Total Values" which is the sum of import and export values. |![](img/16.png){width=160%} 
-19| Click the "+" icon from the "Clean" box in the canvas and select "Output". Set the parameters for saving the new data set as hyper for subsequent usage in Tableau Desktop. |![](img/17.png){width=160%} 
+16| Then click into "Export" to "Create Calculated Field" by custom. |![](img/14.png){width=160%}
+17| Type in the formulate show. Intent is to normalise the values to baseline since some countries base at million while mostly are in thousand. Remove the previous columns and rename the new column. Repeat the Step 15 - 17 for "Import" column. |![](img/15.png){width=160%}
+18| Create new calculated field with naming "Total Values" which is the sum of import and export values. |![](img/16.png){width=160%}
+19| Click the "+" icon from the "Clean" box in the canvas and select "Output". Set the parameters for saving the new data set as hyper for subsequent usage in Tableau Desktop. |![](img/17.png){width=160%}
 
 ## 5.2 Main Chart - Bubble Plot
-1| Load the saved hyper excel into Tableau Desktop and drag the saved sheet into the canvas. Create calculated new field from Import and Export Variables to determine the new variables of Import and Export for year 2019 and 2020 respective. eg "Import 2019". Multiplied by 1000 to account for the normalised value of "thousand" (removed in Step 9) Step 3 could also be used to instead of this step by pivoting the variable by year.|![](img/SbS11.png){width=160%}
-
-
+1| Load the saved hyper file into Tableau Desktop and drag the saved sheet into the canvas. Go to the sheet and create new calculated field "Reference Line". This will be the same step for subsequent creation of calculated fied or new parameter. |![](img/18.png){width=160%}
+2| Type the "SUM([Import Values]}" into the field. "Reference Line" will be used to create the diagonally divider in the chart. |![](img/19.png){width=160%}
+3| Create a new calculated field name "Total Values Ranking". This is to rank the countries based on total trade values in Year X. |![](img/20.png){width=160%}
+4| Create a new parameter with name "Top N Partners". This will be used as filter for the top N Partner since our prepared data comprised all the countries in the original set. To avoid over cluttering, max N=10. |![](img/21.png){width=160%}
+5| Drag the relevant dimensions and measures variables into the respective shelf as show in the image. Do not alarm to observe just a circle on the graph as Tableau will aggregate the trade values into one point. |![](img/22.png){width=160%}
+6| Double click on "Country" dimension at filters shelf to set filter for country. On the "General" tab, filter off "Singapore" since it is part of the data set. Select the "Top" tab, and set the parameters according to the image. To note, on the"Top" values setting, assign the  Parameter created in Step 4 as the value. This will allow user to change the N variable at the interactive dashboard subsequently. Similarly for "Year(Date)", filter off "2010".  |![](img/23a.png){width=160%} ![](img/23b.png){width=160%}
+7| Access the "Sum[Export Values]" Marks. Select "Shapes" as chart type. Drag "Total Values" into Size and "Country" into "Shape". ![](img/24.png){width=160%}
+8| 
 
 ## 5.3 Supporting Chart - Gant & Area Chart
 ## 5.4 Trending Chart - Horizon Chart
 ## 5.5 Interactive Dashboard 
+
+Create a calculated field for measures. Click the analysis menu and select create calculated field.
+Enter 1.0 in the formula area. The example is named "Custom Shapes".
+Drag market to rows. Right click market in the rows shelf and uncheck show header.
+Drag profit to columns.
+Drag the newly created calculated field, [Custom Shapes], to columns to the left of profit. Right click SUM(Custom Shapes) and change the measure to MIN.
+Right click the "Custom Shapes" axis and select edit axis. Select the fixed range. Set the range the start to .9 and the end to 1.1. Click ok. Then, right click the x axis and uncheck show header.
+In the marks card, "Min(Custom Shapes)," select shape from the drop down menu. The shape button should now appear on that marks card. Drag a copy of Market to the shape button. Additionally, the size of shapes can be controlled from this marks card. Click size and use the slider to achieve desired size.
+Click the shape button. Select the desired custom shapes. For how to add and use custom shapes please see the following link.
+The view now shows the profit of different markets with their appropriate symbol
