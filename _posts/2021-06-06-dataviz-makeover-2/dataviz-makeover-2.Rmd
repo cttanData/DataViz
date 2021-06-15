@@ -85,8 +85,8 @@ The final visualisation design can be found on [here](https://public.tableau.com
 No|Step           |Action 
 --|-------------- |--------
 1| Use excel to remove all unnecessary data points and information associated with the tables for respective worksheet. Renamed the worksheet to "Import" and "Export" respectively. Keep all the countries parameters and data associated from Jan 10 to Dec 20. |
-2| Load the excel file into Tableau Prep Builder. Drag the worksheets on the left into the canvas.| ![](img/01.png){width=160%}
-3| Click the "+" icon for Export and select "Pivot".|![](img/02.png){width=160%}
+2| Load the excel file into Tableau Prep Builder. Drag the worksheets on the left into the canvas.| ![](img/01.png){width=160%,height=80%}
+3| Click the "+" icon for Export and select "Pivot".|![](img/02.png){width=160%,height=80%}
 4| Select all the date range field. Drag and drop at the "Pivoted Fields" box.| ![](img/03.png){width=160%}
 5| This is what one will see under "Pivot Results". One could click on the field to verify the pivot.  |![](img/04.png){width=160%}
 6| Double click into  "Total Merchandised Export..." within the "Variables" column under "Pivot Results" field and replace it with "Singapore".|![](img/05.png){width=160%}
@@ -102,17 +102,33 @@ No|Step           |Action
 16| Then click into "Export" to "Create Calculated Field" by custom. |![](img/14.png){width=160%}
 17| Type in the formulate show. Intent is to normalise the values to baseline since some countries base at million while mostly are in thousand. Remove the previous columns and rename the new column. Repeat the Step 15 - 17 for "Import" column. |![](img/15.png){width=160%}
 18| Create new calculated field with naming "Total Values" which is the sum of import and export values. |![](img/16.png){width=160%}
-19| Click the "+" icon from the "Clean" box in the canvas and select "Output". Set the parameters for saving the new data set as hyper for subsequent usage in Tableau Desktop. |![](img/17.png){width=160%}
+19| Click the "+" icon from the "Clean" box in the canvas and select "Output". Set the parameters for saving the new data set as hyper for subsequent usage in Tableau Desktop. |![](img/17.png){width=100%}
 
 ## 5.2 Main Chart - Bubble Plot
-1| Load the saved hyper file into Tableau Desktop and drag the saved sheet into the canvas. Go to the sheet and create new calculated field "Reference Line". This will be the same step for subsequent creation of calculated fied or new parameter. |![](img/18.png){width=160%}
-2| Type the "SUM([Import Values]}" into the field. "Reference Line" will be used to create the diagonally divider in the chart. |![](img/19.png){width=160%}
-3| Create a new calculated field name "Total Values Ranking". This is to rank the countries based on total trade values in Year X. |![](img/20.png){width=160%}
-4| Create a new parameter with name "Top N Partners". This will be used as filter for the top N Partner since our prepared data comprised all the countries in the original set. To avoid over cluttering, max N=10. |![](img/21.png){width=160%}
-5| Drag the relevant dimensions and measures variables into the respective shelf as show in the image. Do not alarm to observe just a circle on the graph as Tableau will aggregate the trade values into one point. |![](img/22.png){width=160%}
-6| Double click on "Country" dimension at filters shelf to set filter for country. On the "General" tab, filter off "Singapore" since it is part of the data set. Select the "Top" tab, and set the parameters according to the image. To note, on the"Top" values setting, assign the  Parameter created in Step 4 as the value. This will allow user to change the N variable at the interactive dashboard subsequently. Similarly for "Year(Date)", filter off "2010".  |![](img/23a.png){width=160%} ![](img/23b.png){width=160%}
-7| Access the "Sum[Export Values]" Marks. Select "Shapes" as chart type. Drag "Total Values" into Size and "Country" into "Shape". ![](img/24.png){width=160%}
-8| 
+
+No|Step           |Action 
+--|-------------- |--------
+1| Load the saved hyper file into Tableau Desktop and drag the saved sheet into the canvas. Go to the sheet and create new calculated field "Reference Line". This will be the same step for subsequent creation of calculated fied or new parameter. |![](img/18.png){width=160%,height=70%}
+2| Type the "SUM([Import Values]}" into the field. "Reference Line" will be used to create the diagonally divider in the chart. |![](img/19.png){width=100%}
+3| Create a new calculated field name "Total Values Ranking". This is to rank the countries based on total trade values in Year X. |![](img/20.png){width=100%}
+4| Create a new parameter with name "Top N Partners". This will be used as filter for the top N Partner since our prepared data comprised all the countries in the original set. To avoid over cluttering, max N=10. |![](img/21.png){width=100%}
+5| Drag the relevant dimensions and measures variables into the respective shelf as show in the image. Do not alarm to observe just a circle on the graph as Tableau will aggregate the trade values into one point. |![](img/22.png){width=100%}
+6| Double click on "Country" dimension at filters shelf to set filter for country. On the "General" tab, filter off "Singapore" since it is part of the data set. Select the "Top" tab, and set the parameters according to the image. To note, on the"Top" values setting, assign the  Parameter created in Step 4 as the value. This will allow user to change the N variable at the interactive dashboard subsequently. Similarly for "Year(Date)", filter off "2010".  |![](img/23a.png){width=100%} ![](img/23b.png){width=100%}
+7| Access the "Sum[Export Values]" Marks. Select "Shapes" as chart type. |![](img/24.png){width=160%,height=100%}
+8| Drag "Total Values" into Size and "Country" into "Shape". Click into "Shape" and a new dialogue box will appear. Change the "Select Shape Palette" to "Flag" and then assigned the country flag to the relevant data. Prior to this, one should download the country flag icon from the internet and save it in the directory:("My Tableau Repository\Shapes\Flags"). (Need to create flag folder. The visualisation has been designed using resources (country images) from [Flaticon.com](https://www.flaticon.com/) by [Freepik]("https://www.freepik.com")) | ![](img/25.png){width=100%}
+9| Similar for "Reference Line" marks, select "Line", drag and drop "Country" into "Detail". One shall also see a diagonal line in the Reference Line plot. |![](img/26.png){width=100%,height=80%}
+10| Right click into Reference Line plot and select "Show Trend Lines". Repeat, but select "Edit all Trend lines.." |![](img/27.png){width=100%}
+11| Un-check all the options in the dialogue box as aim is to tooltip for trend line. Then, click on the "Color" and "Size" on the "Reference Line" Marks respectively to change "opacity" = 0 and size to smallest. Similarly, click on "Tooltip" and delete s click into  |![](img/28.png){width=100%}
+12| Right click into the "Reference Line" axis  and select "Dual Axis". Repeat and select "Synchronize Axis". Both plots will now merge into one. Repeat again to deselect "Show Header".  |![](img/29.png){width=100%}
+13| Right click on the reference line and select "Format". On the left format panel, click on the Trend lines to create the level of inking on the trend line.(i.e thickness and colour tone) Similarly for "Grid Lines". |![](img/30.png){width=100%,height=45%}
+14| Click on the Y axis and select "Edit Axis".Fixed the axis value to range Min=0 and Max =80B. Amend the tile of the axis. Repeat for X axis to create a symmetric axis. The Reference Line trend line will be diagonally position. So values above diagonal line is deemed as net importer and vice verse. |![](img/31.png){width=100%}
+15| Right click on X axis and select "Format". On the left panel, format the default "Font" and title "Font". This is to create the inking for Net Importer. Then click on "4" to format the axis line to same inking colour through "Column Divider" . Repeat the same for X axis and "Row Divider". |![](img/32.png){width=100%,height=80%}
+16| Create new calculated field name as "Total Values Ranking" and use the parameter "RANK(SUM([Total Values]),'desc')". Purpose to rank the country based on total trade values. Repeat for "Export Ranking" and "Import Ranking" calculated field by replacing "Total Values" in the parameter with the appropriate parameter. |![](img/33.png){width=100%}
+17| Create new calculated field "Trade Balance(-)". Intention is to determine whether it is net importer or exporter. Use formulator within. Repeat for Trade Balance(+)".|![](img/34.png){width=100%}
+18| Drag and drop the relevant parameters from Table to Marks of SUM(Export Values). |![](img/35.png)
+19| Click on one of the "SUM(Total Values)" to select "Precent Difference" for "Quick Table Calculation". Input the parameters based on image. This is to determine Year-to-Year trade growth rate. |![](img/36.png){width=100%}
+20| Create a new calculated flied "Trade Growth(+)". Double click into the measure created in Step19 and copy out the formulator within and paste into the "Trade Growth". This is to create the logic to determine positive or negative growth so respective inking effect can be applied at label. |![](img/37.png){width=100%}
+21| Click "Label" and edit the "Text". "Insert" relevant parameters from the list in the image. Arrange and ink  accordingly.  |![](img/38.png){width=120%}
 
 ## 5.3 Supporting Chart - Gant & Area Chart
 ## 5.4 Trending Chart - Horizon Chart
