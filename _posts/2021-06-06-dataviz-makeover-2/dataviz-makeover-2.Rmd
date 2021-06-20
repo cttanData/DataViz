@@ -212,7 +212,7 @@ To offer another level of details via visualisation through horizon chart, the c
 ![*Figure 6.3. !0 Years Trending in Import Parameters for Respective Country*.](img/DVMO6.png){ width=100% }
 </center>
 
-From horizon chart when view at monthly aggregation,  4 countries namely Thailand, Indonesia, Taiwan and China (included Hong Kong) did not change it state with certainty. Republic of Korea, Malaysia and United States do swap their state. All these observations were similar from the bubble chart. However, it was uncertain whether Japan and  EU change their state. Additional insights were also gleaned and explained as follow: 
+From horizon chart when view at monthly aggregation, 4 countries namely Thailand, Indonesia, Taiwan and China (included Hong Kong) did not change it state with certainty. Republic of Korea, Malaysia and United States do swap their state. All these observations were similar from the bubble chart. However, it was uncertain whether Japan and  EU change their state. Additional insights were also gleaned and explained as follow: 
 
 **No change in State**
 1. *China (Net Exporter)*. Relative consistent percent of import as net Exporter. Trade Balance closer to neutral from 2018 onward with occasional spike. However, in late 2019 to early 2020, import percent increased greater than 50%. In Aug 20, a big spike where percent of import drop from 50.7% in July 20 to 41.2%. It was interesting to determine whether there was seasonal influence as spike in higher export percent seemed to occur in Feb and around Aug from 2017 onward less 2018 and Feb 20. (i.e. China locked down) Overall, China trade with Singapore was on upward trend.
@@ -227,12 +227,12 @@ From horizon chart when view at monthly aggregation,  4 countries namely Thailan
 
 6. *European Union (Net Importer)*. Generally, similar observation as Japan but with a more consistent percentage of import across 2011 to 2019. Attempted to switch state but failed. After Mar 2020, Import growth drop significant as compared to export. This could be attributed numerous lock down in EU countries. Overall, EU trade with Singapore was on downward trend in the last 2 years.
 
-** Change in State" 
+** Change in State** 
 1. *Malaysia (Net Exporter to Importer)*. Percent of Import was relatively consistent and lower than 50% (low 40%) till May 2016 where percent of import grew from 42.4% in Apr 2016 to 47.6% with an month-to-month growth of import values by 15.2%. Thereafter, while it was till lower than 50%, the percent of import hovered around high 40% till 2019 where it crossed the 50% mark and by annual aggregation, it was deemed to be a Net Importer. However, percent of import remained to be on low 50% till Apr 2020 where it grew to high sustained 50% mark. The growth in percent do not translate to increase in similar trade values. Interestingly during COVID, the drop in export was higher than the drop in import or vice verses which resulted in a higher percent of import. Overall, Malaysia trade with Singapore was on downward trend in the last 2 years.
 
-2. *United States (Net Importer to Exporter)*.Traditionally, percent of import was in the 60% till 2016 but still relative high in 50%. Start of decline came in Nov 2019 at 58.1% t0 44.8% in Apr 20. Thereafter, remained in the 40% region with the lowest in Jul 20 at 39.1%. What one could observe was that the drop in import values were much higher than export values which resulted in the change in state eventually. Overall, United States trade with Singapore was on upward trend.
+2. *United States (Net Importer to Exporter)*. Traditionally, percent of import was in the 60% till 2016 but still relative high in 50%. Start of decline came in Nov 2019 at 58.1% t0 44.8% in Apr 20. Thereafter, remained in the 40% region with the lowest in Jul 20 at 39.1%. What one could observe was that the drop in import values were much higher than export values which resulted in the change in state eventually. Overall, United States trade with Singapore was on upward trend.
 
-3. *Republic of Korea. (Net Importer to Exporter)*. Generally percent of import reduced overtime till 2017 where eventually, it was transited to be Net Exporter. Similarly, there was a spike in Percent Import from 47.7% in Mar 2020 to 52.4% in Apr 2020. Export has dropped more significant than import. i.e. -17.8% and -9.5% respectively. Overall, Republic of Korea trade with Singapore was on downward trend with an upward in 2020.
+3. *Republic of Korea. (Net Importer to Exporter)*.  Generally percent of import reduced overtime till 2017 where eventually, it was transited to be Net Exporter. Similarly, there was a spike in Percent Import from 47.7% in Mar 2020 to 52.4% in Apr 2020. Export has dropped more significant than import. i.e. -17.8% and -9.5% respectively. Overall, Republic of Korea trade with Singapore was on downward trend with an upward in 2020.
 
 # 7.0 Summary
 
