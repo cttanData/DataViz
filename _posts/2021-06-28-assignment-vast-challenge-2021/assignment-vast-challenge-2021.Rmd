@@ -2,7 +2,6 @@
 title: "Assignment - VAST Challenge 2021"
 description: |
   [VAST Challenge 2021](https://vast-challenge.github.io/2021/). Applying visual analytics to gain Insight.....  
-draft: true
 author:
   - name: Choo T Tan
     url: {}
@@ -92,5 +91,14 @@ glimpse(gps)
 ```
 
 # 5.0 Data Wrangling
-## Preparation of Personnel Node.
+## 5.1Preparation of Personnel Node
+This will be built based on MC1 employee records. Only relevant information will be used. 
+
+```{r echo = FALSE, warning = FALSE}
+#Loading the base file 
+GAStech_persnode<- read_csv("data/aspatial/employeeinfo.csv")
+
+```
+```
+
 
