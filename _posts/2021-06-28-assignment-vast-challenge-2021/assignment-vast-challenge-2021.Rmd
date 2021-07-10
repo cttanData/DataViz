@@ -1,0 +1,96 @@
+---
+title: "Assignment - VAST Challenge 2021"
+description: |
+  [VAST Challenge 2021](https://vast-challenge.github.io/2021/). Applying visual analytics to gain Insight.....  
+draft: true
+author:
+  - name: Choo T Tan
+    url: {}
+date: 06-28-2021
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, error = FALSE)
+```
+
+```{r echo = FALSE, warning = FALSE}
+packages <- c('sp','rgdal','rgeos','sf','tidyverse', 'igraph', 'plotly', 'ggiraph', 'DT','lubridate', 'clock')
+for (p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p,character.only = T)
+}
+```
+```{r echo = FALSE, warning = FALSE    }
+#Loading the base file 
+credit <- read_csv("data/aspatial/cc_data.csv")
+loyalty <- read_csv("data/aspatial/loyalty_data.csv")
+#veh <- read_csv("data/car-assignments.csv")
+gps <- read_csv("data/aspatial/gps.csv")
+```
+
+# 1.0 Introduction 
+The assignment is based on [VAST Challenge 2021](https://vast-challenge.github.io/2021/) where it attempted to solve the [Mini Challenges 2 (MC2)](https://vast-challenge.github.io/2021/MC2.html) via visual analytics out of the 3 mini challenges. The fictitious scenario was based on a Tethys-based natural gas production company GAStech in the country of Kronos where it has remarkable profits and strong relationship with the government. However, GAStech has not been as successful in demonstrating environmental stewardship. Several Employee went missing in January 2014 after a successful initial public offering. It was suspected that the disappearance might be associated with an organization known as the Protectors of Kronos (POK). However, things may not be so simplicity. Thus,one is tasked to assist the law enforcement from Kronos and Tethys in solving the assigned task via visual analytics.
+
+# 2.0 Liteture Review
+
+# 3.0 Approach and Overview
+For MC2, the main task was to identify suspicious patterns of behavior from the transaction done by GASTech employees. You must cope with uncertainties that result from missing, conflicting, and imperfect data to make recommendations for further investigation.there are 4 main CSV files with Korons geospatial data and it based on last 14 days, 6 - 19 January 2014 prior to the disappearance. The CSV files are namely (1) credit card transaction, (2) loyalty card transaction, (3) geospatial tracking data for company cars which not know to employee, (4) car assignment. The investigation will the following 4 main steps:
+
+1. **Preliminary Analysis**. The intent is to gain insights across the dataset distribution and disparity. A basic understand on the foundation layer.
+
+2. **Data Wrangling**. To establish relationship between credit card, loyalty card and geospatial tracking data, To prepare the data for subsequent analysis.
+
+3. **Exploratory Data Analysis (EDA)**.  To identify patterns and anomalies from the transactions and geospatial tracking. Subsequent, to correlate the discovered insights in suitable narrative for further investigation. 
+
+# 4.0 Preliminary Analysis
+
+Sample of credit and loyalty datasets were shown below. Preliminary, observed that there were more credit than loyalty card transaction. Whether it was a scenario on independent credit card transaction without loyalty card or vice verse was something to be discovered later.Moreover credit card has transaction data time information while loyalty card only has transaction date only. Reference to the respective column datatype, need to covert "timestamp" to datetime/date,"last4ccnum" and loyaltynum" to factor as technically, it was not a numeric data type. When one explored the "timestamp" data deeper, its observed that the variable has different date format after 13 Jan. i.e. 2014 %Y vs 14 %y. Would need to be clean. 
+
+Glimpse of credit card dataset:
+
+```{r, echo=FALSE}
+glimpse(credit)
+```
+
+Glimpse of loyalty card dataset:
+
+```{r, echo = FALSE}
+glimpse(loyalty)
+```
+
+```{r, echo=FALSE, results = FALSE}
+length(unique(credit$last4ccnum))
+length(unique(loyalty$loyaltynum))
+length(unique(credit$location))
+length(unique(loyalty$location))
+credit$location[!(credit$location %in% loyalty$location)]
+credit$price[!(credit$location %in% loyalty$location)]
+```
+
+Reference to the company employee records in challenge 1, GASTech has 54 staffs. However when do a unique count on the credit and loyalty card numbers, it was 55 and 54 count respectively. It alluded that one of the staff could have 2 credit cards. Moreover,a unique count on the number of transaction locations for each dataset has shown that there were 34 and 33 locations for credit and loyalty card respectively. The additional location in credit card dataset was known as "Daily Dealz" with a transaction amount "2.01".From the transaction price captured respectively in both dataset, interesting to note that the mean was relatively close but min-max and inter-quartile range were quite different. 
+
+```{r echo = FALSE}
+print("Credit Card PriceTransaction Summary.")
+summary(credit$price)
+print("Loyalty Card Price Transaction Summary.")
+summary(loyalty$price)
+```
+
+On the geospatial tracking dateset, similar observation on timestamp data type. Given there were 35 and 5 unique private company car and truck respectively, there would be some transaction credit/loyalty card that would have difficulty to associate it to an individual within the company since not everybody drives. Similar treatment on datatype would have to be done on "Timestamp" and "id".   
+
+Glimpse of geospatial tracking dataset:
+
+```{r echo = FALSE}
+glimpse(gps)
+```
+
+# 5.0 Data Wrangling
+## Preparation of Personnel Node.
+
