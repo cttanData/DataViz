@@ -14,11 +14,11 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, error = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE)
 ```
 
 ```{r echo = FALSE, warning = FALSE}
-packages <- c('sp','rgdal','rgeos','sf','tidyverse', 'igraph', 'plotly', 'ggiraph', 'DT','lubridate', 'clock')
+packages <- c('sf','tidyverse', 'igraph', 'plotly', 'ggiraph','lubridate', 'clock')
 for (p in packages){
   if(!require(p, character.only = T)){
     install.packages(p)
@@ -91,14 +91,94 @@ glimpse(gps)
 ```
 
 # 5.0 Data Wrangling
-## 5.1Preparation of Personnel Node
+## 5.1 Preparation of Personnel Node
 This will be built based on MC1 employee records. Only relevant information will be used. 
+
+Glimpse of personnel information:
 
 ```{r echo = FALSE, warning = FALSE}
 #Loading the base file 
 GAStech_persnode<- read_csv("data/aspatial/employeeinfo.csv")
-
+glimpse(GAStech_persnode)
 ```
+## 5.1 Mapping Credit to Loyalty Card
+
+Perform required data wrangling based on observation in Section 4. To resolve the datetime format for timestamp and set the credit card number as factor. In addition, create date, weekday and hour for the credit. For loyalty card, renamed timestamp as date to faciltate inner join later. Similarly change the datatype for "loyaltynum".
+
+Glimpse of prepared credit card dataset:
+
+```{r, clean up credit up echo = FALSE}
+credit$last4ccnum = as_factor(credit$last4ccnum) # convert it factor
+
+#cleaning up on datetime format, since there is %y vs %Y. Try to use ifelse but syntac error that cant resolve
+credit <- credit %>% # separate them into fine entity
+  separate(timestamp, into = c("date","time"), sep=" ",remove = TRUE) %>%
+  separate(time, into = c("hr", "min"), sep=":",remove = TRUE) %>%
+  separate(date, into = c("mth", "day", "yr"), sep="/",remove = FALSE) %>%
+  mutate(yr=2014)
+
+pack <- c('yr','mth','day','hr','min') # convert to numeric since make_datetime need numeric format
+for (p in pack){
+  credit <- credit %>% mutate_at(c(p),as.numeric)
+}
+
+credit  <- credit %>% 
+  mutate(timestamp = make_datetime(yr,mth,day,hr,min)) %>%
+  dplyr::select(-yr,-mth,-min) %>%
+  arrange(last4ccnum, timestamp) %>%
+  relocate(last4ccnum, timestamp, .before=date)
+
+credit$wkday <- lubridate::wday(credit$timestamp, label= TRUE, abbr = FALSE)
+
+glimpse(credit)
+```
+```{r, clean up credit up echo = FALSE, eval = FALSE}
+#cant get it work
+credit$last4ccnum <-  as_factor(credit$last4ccnum) # convert it factor
+credit <- credit %>% # separate them into fine entity
+  separate(timestamp, into = c("date","time"), sep=" ",remove = FALSE)%>%
+  arrange(last4ccnum,timestamp)
+credit$timestamp <- date_time_parse(credit$timestamp,  zone ="", format = "%m/%d/%Y %H:%M") # cover to dttm
+year(credit$timestamp)=2014 # due to %y vs %Y
+credit$date = dmy(credit$date)
+credit$weekday = lubridate::wday(credit$date, label=TRUE, abbr=FALSE)
+glimpse(credit)
+```
+
+Glimpse of prepared loyalty card dataset:
+
+```{r, clean up loyalty card, echo = FALSE}
+loyalty$loyaltynum = as_factor(loyalty$loyaltynum)
+loyalty<-loyalty %>% 
+  rename(date = timestamp) %>%
+  arrange(loyaltynum) %>%
+  relocate(loyaltynum, .before = date)
+glimpse(loyalty)
+```
+
+```{r}
+loyalty <- read_csv("data/aspatial/loyalty_data.csv")
+```
+
+__Inner join for both Datasets__. Based on date, location and price for inner join. Thereafter, compute the number of distinct count between a credit-loyalty pair. If credit - loyalty has more than one distinct pair, imply the credit card owner could be using numerous loyalty card or vice verse. It note that inner join has 1087 observations, 403 and 305 less than credit and loyalty card transaction respectively. This could imply that individual could only transact with one card due to some reasons. When determine the unique count on both cards and location, it was determined that the unique count for credit and loyalty card remained no change. This imply all possible relationship between both card should be captured within the inner join. On location, the inner join has 2 location less than the credit card transaction, namely, Korons Mart and Daily Dealz. This implied that at any onetime, only one card has been used in those places.
+
+```{r, inner join Credit and Loyalty to determine relationship, echo=TRUE}
+ijoin <- credit %>%
+  inner_join(loyalty,by=c('date', 'location','price')) %>%
+  group_by(last4ccnum) %>%
+  mutate(ndist = n_distinct(loyaltynum)) %>%
+  ungroup() %>%
+  group_by(loyaltynum) %>%
+  mutate(ndist = ifelse(ndist ==1,n_distinct(last4ccnum), ndist)) %>%
+  ungroup()
+
+glimpse(ijoin)
+```
+```{r, results=FALSE}
+length(unique(ijoin$last4ccnum))
+length(unique(ijoin$loyaltynum))
+length(unique(ijoin$location))
+credit$location[!(credit$location %in% ijoin$location)]
 ```
 
 

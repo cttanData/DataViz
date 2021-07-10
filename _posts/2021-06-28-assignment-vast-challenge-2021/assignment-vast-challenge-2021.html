@@ -18,6 +18,72 @@
  <!--radix_placeholder_import_source-->
  <!--/radix_placeholder_import_source-->
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
 
   <!--radix_placeholder_meta_tags-->
   <title>Assignment - VAST Challenge 2021</title>
@@ -2426,7 +2492,8 @@ distill-header .nav a {
 <li><a href="#approach-and-overview">3.0 Approach and Overview</a></li>
 <li><a href="#preliminary-analysis">4.0 Preliminary Analysis</a></li>
 <li><a href="#data-wrangling">5.0 Data Wrangling</a><ul>
-<li><a href="#preparation-of-personnel-node">5.1Preparation of Personnel Node</a></li>
+<li><a href="#preparation-of-personnel-node">5.1 Preparation of Personnel Node</a></li>
+<li><a href="#mapping-credit-to-loyalty-card">5.1 Mapping Credit to Loyalty Card</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -2490,14 +2557,81 @@ $ lat       &lt;dbl&gt; 36.07623, 36.07622, 36.07621, 36.07622, 36.07621, …
 $ long      &lt;dbl&gt; 24.87469, 24.87460, 24.87444, 24.87425, 24.87417, …</code></pre>
 </div>
 <h1 id="data-wrangling">5.0 Data Wrangling</h1>
-<h2 id="preparation-of-personnel-node">5.1Preparation of Personnel Node</h2>
+<h2 id="preparation-of-personnel-node">5.1 Preparation of Personnel Node</h2>
 <p>This will be built based on MC1 employee records. Only relevant information will be used.</p>
+<p>Glimpse of personnel information:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre><code>Rows: 54
+Columns: 9
+$ PersID                &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,…
+$ FirstName             &lt;chr&gt; &quot;Nils&quot;, &quot;Lars&quot;, &quot;Felix&quot;, &quot;Ingrid&quot;, &quot;Is…
+$ LastName              &lt;chr&gt; &quot;Calixto&quot;, &quot;Azada&quot;, &quot;Balas&quot;, &quot;Barranco…
+$ `Veh ID`              &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,…
+$ Gender                &lt;chr&gt; &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Female&quot;, &quot;Mal…
+$ Department            &lt;chr&gt; &quot;Information Technology&quot;, &quot;Engineering…
+$ Appt                  &lt;chr&gt; &quot;IT Technician&quot;, &quot;Engineer&quot;, &quot;Engineer…
+$ MilitaryServiceBranch &lt;chr&gt; NA, &quot;TethanDefenseForceAir&quot;, &quot;TethanDe…
+$ MilitaryDischargeType &lt;chr&gt; NA, &quot;GeneralDischarge&quot;, &quot;HonorableDisc…</code></pre>
+</div>
+<h2 id="mapping-credit-to-loyalty-card">5.1 Mapping Credit to Loyalty Card</h2>
+<p>Perform required data wrangling based on observation in Section 4. To resolve the datetime format for timestamp and set the credit card number as factor. In addition, create date, weekday and hour for the credit. For loyalty card, renamed timestamp as date to faciltate inner join later. Similarly change the datatype for “loyaltynum”.</p>
+<p>Glimpse of prepared credit card dataset:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre><code>Rows: 1,490
+Columns: 8
+$ last4ccnum &lt;fct&gt; 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1…
+$ timestamp  &lt;dttm&gt; 2014-01-06 08:16:00, 2014-01-06 13:27:00, 2014-0…
+$ date       &lt;chr&gt; &quot;1/6/14&quot;, &quot;1/6/14&quot;, &quot;1/7/14&quot;, &quot;1/7/14&quot;, &quot;1/8/14&quot;,…
+$ day        &lt;dbl&gt; 6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 11, 12, 12, 12,…
+$ hr         &lt;dbl&gt; 8, 13, 7, 13, 8, 13, 20, 8, 13, 20, 8, 20, 13, 15…
+$ location   &lt;chr&gt; &quot;Brew&#39;ve Been Served&quot;, &quot;Abila Zacharo&quot;, &quot;Brew&#39;ve …
+$ price      &lt;dbl&gt; 14.97, 50.14, 11.92, 45.05, 7.26, 50.36, 62.20, 1…
+$ wkday      &lt;ord&gt; Monday, Monday, Tuesday, Tuesday, Wednesday, Wedn…</code></pre>
+</div>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
-<pre><code>
+<p>Glimpse of prepared loyalty card dataset:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre><code>Rows: 1,392
+Columns: 4
+$ loyaltynum &lt;fct&gt; L2247, L2247, L2247, L2247, L2247, L2247, L2247, …
+$ date       &lt;chr&gt; &quot;1/6/14&quot;, &quot;1/6/14&quot;, &quot;1/6/14&quot;, &quot;1/7/14&quot;, &quot;1/7/14&quot;,…
+$ location   &lt;chr&gt; &quot;Brew&#39;ve Been Served&quot;, &quot;Ouzeri Elian&quot;, &quot;Frydos Au…
+$ price      &lt;dbl&gt; 4.17, 20.74, 175.87, 12.74, 17.71, 23.12, 14.88, …</code></pre>
+</div>
+<p><strong>Inner join for both Datasets</strong>. Based on date, location and price for inner join. Thereafter, compute the number of distinct count between a credit-loyalty pair. If credit - loyalty has more than one distinct pair, imply the credit card owner could be using numerous loyalty card or vice verse. It note that inner join has 1087 observations, 403 and 305 less than credit and loyalty card transaction respectively. This could imply that individual could only transact with one card due to some reasons. When determine the unique count on both cards and location, it was determined that the unique count for credit and loyalty card remained no change. This imply all possible relationship between both card should be captured within the inner join. On location, the inner join has 2 location less than the credit card transaction, namely, Korons Mart and Daily Dealz. This implied that at any onetime, only one card has been used in those places.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class="va">ijoin</span> <span class="op">&lt;-</span> <span class="va">credit</span> <span class="op">%&gt;%</span>
+  <span class="fu">inner_join</span><span class="op">(</span><span class="va">loyalty</span>,by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">&#39;date&#39;</span>, <span class="st">&#39;location&#39;</span>,<span class="st">&#39;price&#39;</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">last4ccnum</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>ndist <span class="op">=</span> <span class="fu">n_distinct</span><span class="op">(</span><span class="va">loyaltynum</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">loyaltynum</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>ndist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">ndist</span> <span class="op">==</span><span class="fl">1</span>,<span class="fu">n_distinct</span><span class="op">(</span><span class="va">last4ccnum</span><span class="op">)</span>, <span class="va">ndist</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span>
 
-```{.r .distill-force-highlighting-css}</code></pre>
+<span class="fu">glimpse</span><span class="op">(</span><span class="va">ijoin</span><span class="op">)</span>
+</code></pre>
+</div>
+<pre><code>Rows: 1,087
+Columns: 10
+$ last4ccnum &lt;fct&gt; 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1…
+$ timestamp  &lt;dttm&gt; 2014-01-06 08:16:00, 2014-01-06 13:27:00, 2014-0…
+$ date       &lt;chr&gt; &quot;1/6/14&quot;, &quot;1/6/14&quot;, &quot;1/7/14&quot;, &quot;1/7/14&quot;, &quot;1/8/14&quot;,…
+$ day        &lt;dbl&gt; 6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 11, 12, 12, 13,…
+$ hr         &lt;dbl&gt; 8, 13, 7, 13, 8, 13, 20, 8, 13, 20, 8, 20, 15, 19…
+$ location   &lt;chr&gt; &quot;Brew&#39;ve Been Served&quot;, &quot;Abila Zacharo&quot;, &quot;Brew&#39;ve …
+$ price      &lt;dbl&gt; 14.97, 50.14, 11.92, 45.05, 7.26, 50.36, 62.20, 1…
+$ wkday      &lt;ord&gt; Monday, Monday, Tuesday, Tuesday, Wednesday, Wedn…
+$ loyaltynum &lt;fct&gt; L3572, L3288, L3572, L3288, L3572, L3288, L3288, …
+$ ndist      &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
