@@ -202,7 +202,6 @@ plot(bg, layout=layout.bipartite,
      vertex.shape = shape[V(bg)$type+1],
      edge.width = E(bg)$weights*0.8,
      edge.label=E(bg)$weights, edge.label.cex=0.9, edge.label.color ="black")
-#layout="l-screen-inset"
 ```
 
 
