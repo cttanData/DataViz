@@ -14,7 +14,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, fig.retina = 3)
 ```
 
 ```{r echo = FALSE, warning = FALSE}
@@ -168,8 +168,8 @@ ijoin <- credit %>%
   mutate(ndist = if_else(ndist==1,n_distinct(last4ccnum), ndist)) %>%
   ungroup()
 
-tmp <- head(ijoin)
-knitr::kable(tmp)
+ijoin
+
 ```
 ```{r, results=FALSE}
 length(unique(ijoin$last4ccnum))
@@ -180,7 +180,7 @@ credit$location[!(credit$location %in% ijoin$location)]
 
 __Bipartite Graph for Credit-Loyalty Pair__. group_by was done on the inner join dataset to determine the number of transactions for each unique pairing of credit and loyalty card. To minimise cluttering in discovering the unique pairing respective credit to loyalty card, we have filtered the dataset for distinct pairing count >=2. Will use igraph to built a bipartite graph with nodes as credit and loyalty cards, where the edges connote transaction where both cards were used and the edge weight equal to the number of transactions. The bipartite graph was shown below.
 
-```{r message = FALSE, warning= FALSE, fig.width=80, fig.align="centre", fig.cap = "Bipartite"}
+```{r message = FALSE, fig.width = 25, fig.align ="centre", fig.cap = "Bipartite Graph of Credit(Orange) and Loyalty(Pink) Cards.", warning = FALSE}
 
 #forming the bipartite graph
 bigraph <- ijoin %>% # filter out unique pairing and count
@@ -190,19 +190,18 @@ bigraph <- ijoin %>% # filter out unique pairing and count
   mutate_at(c("weights"), as.numeric)%>%
   arrange(loyaltynum) %>%
   ungroup()
-
 #plot bipartite graph
 bg<- graph.data.frame(bigraph, directed = FALSE)
 V(bg)$type <- bipartite_mapping(bg)$type # assign vertex or nodes
-
 shape <- c("circle", "square")
 E(bg)$color[E(bg)$weights<=5] <- 'red'
 E(bg)$color[E(bg)$weights>5] <- 'sky blue'
 plot(bg, layout=layout.bipartite, 
-     vertex.color=c("orange","pink")[V(bg)$type+1], vertex.size=18, vertex.label.cex=9,
+     vertex.color=c("orange","pink")[V(bg)$type+1], vertex.size=20, vertex.label.cex=0.8,
      vertex.shape = shape[V(bg)$type+1],
-     edge.width = E(bg)$weights*5,
-     edge.label=E(bg)$weights, edge.label.cex=8, edge.label.color ="black")
+     edge.width = E(bg)$weights*0.2,
+     edge.label=E(bg)$weights, edge.label.cex=0.5, edge.label.color ="black")
+#layout="l-screen-inset"
 ```
 
 
