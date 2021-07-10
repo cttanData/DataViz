@@ -54,13 +54,13 @@ Sample of credit and loyalty datasets were shown below. Preliminary, observed th
 
 Glimpse of credit card dataset:
 
-```{r, echo=FALSE}
+```{r}
 glimpse(credit)
 ```
 
 Glimpse of loyalty card dataset:
 
-```{r, echo = FALSE}
+```{r}
 glimpse(loyalty)
 ```
 
@@ -75,7 +75,7 @@ credit$price[!(credit$location %in% loyalty$location)]
 
 Reference to the company employee records in challenge 1, GASTech has 54 staffs. However when do a unique count on the credit and loyalty card numbers, it was 55 and 54 count respectively. It alluded that one of the staff could have 2 credit cards. Moreover,a unique count on the number of transaction locations for each dataset has shown that there were 34 and 33 locations for credit and loyalty card respectively. The additional location in credit card dataset was known as "Daily Dealz" with a transaction amount "2.01".From the transaction price captured respectively in both dataset, interesting to note that the mean was relatively close but min-max and inter-quartile range were quite different. 
 
-```{r echo = FALSE}
+```{r}
 print("Credit Card PriceTransaction Summary.")
 summary(credit$price)
 print("Loyalty Card Price Transaction Summary.")
@@ -86,7 +86,7 @@ On the geospatial tracking dateset, similar observation on timestamp data type. 
 
 Glimpse of geospatial tracking dataset:
 
-```{r echo = FALSE}
+```{r}
 glimpse(gps)
 ```
 
@@ -96,7 +96,7 @@ This will be built based on MC1 employee records. Only relevant information will
 
 Glimpse of personnel information:
 
-```{r echo = FALSE, warning = FALSE}
+```{r, warning = FALSE}
 #Loading the base file 
 GAStech_persnode<- read_csv("data/aspatial/employeeinfo.csv")
 glimpse(GAStech_persnode)
@@ -107,7 +107,7 @@ Perform required data wrangling based on observation in Section 4. To resolve th
 
 Glimpse of prepared credit card dataset:
 
-```{r, clean up credit up echo = FALSE}
+```{r clean up credit up, echo = FALSE}
 credit$last4ccnum = as_factor(credit$last4ccnum) # convert it factor
 
 #cleaning up on datetime format, since there is %y vs %Y. Try to use ifelse but syntac error that cant resolve
@@ -132,7 +132,7 @@ credit$wkday <- lubridate::wday(credit$timestamp, label= TRUE, abbr = FALSE)
 
 glimpse(credit)
 ```
-```{r, clean up credit up echo = FALSE, eval = FALSE}
+```{r echo = FALSE, eval = FALSE}
 #cant get it work
 credit$last4ccnum <-  as_factor(credit$last4ccnum) # convert it factor
 credit <- credit %>% # separate them into fine entity
@@ -147,7 +147,7 @@ glimpse(credit)
 
 Glimpse of prepared loyalty card dataset:
 
-```{r, clean up loyalty card, echo = FALSE}
+```{r clean up loyalty card, echo = FALSE}
 loyalty$loyaltynum = as_factor(loyalty$loyaltynum)
 loyalty<-loyalty %>% 
   rename(date = timestamp) %>%
@@ -156,11 +156,7 @@ loyalty<-loyalty %>%
 glimpse(loyalty)
 ```
 
-```{r}
-loyalty <- read_csv("data/aspatial/loyalty_data.csv")
-```
-
-__Inner join for both Datasets__. Based on date, location and price for inner join. Thereafter, compute the number of distinct count between a credit-loyalty pair. If credit - loyalty has more than one distinct pair, imply the credit card owner could be using numerous loyalty card or vice verse. It note that inner join has 1087 observations, 403 and 305 less than credit and loyalty card transaction respectively. This could imply that individual could only transact with one card due to some reasons. When determine the unique count on both cards and location, it was determined that the unique count for credit and loyalty card remained no change. This imply all possible relationship between both card should be captured within the inner join. On location, the inner join has 2 location less than the credit card transaction, namely, Korons Mart and Daily Dealz. This implied that at any onetime, only one card has been used in those places.
+__Inner join for both Datasets__. Based on date, location and price for inner join. Thereafter, compute the number of distinct count between a credit-loyalty pair. If respective credit and loyalty cards has more than one distinct pair, imply the credit card owner could be using numerous loyalty cards or vice verse. It note that inner join has 1087 observations, 403 and 305 less than credit and loyalty card transaction respectively. This could imply that individual could only transact with one card due to some reasons. When determine the unique count on both cards and location, it was determined that the unique count for credit and loyalty card remained no change. This imply all possible relationship between both card should be captured within the inner join. On location, the inner join has 2 location less than the credit card transaction, namely, Korons Mart and Daily Dealz. This implied that at any onetime, only one card has been used in those places.
 
 ```{r, inner join Credit and Loyalty to determine relationship, echo=TRUE}
 ijoin <- credit %>%
@@ -169,16 +165,44 @@ ijoin <- credit %>%
   mutate(ndist = n_distinct(loyaltynum)) %>%
   ungroup() %>%
   group_by(loyaltynum) %>%
-  mutate(ndist = ifelse(ndist ==1,n_distinct(last4ccnum), ndist)) %>%
+  mutate(ndist = if_else(ndist==1,n_distinct(last4ccnum), ndist)) %>%
   ungroup()
 
-glimpse(ijoin)
+tmp <- head(ijoin)
+knitr::kable(tmp)
 ```
 ```{r, results=FALSE}
 length(unique(ijoin$last4ccnum))
 length(unique(ijoin$loyaltynum))
 length(unique(ijoin$location))
 credit$location[!(credit$location %in% ijoin$location)]
+```
+
+__Bipartite Graph for Credit-Loyalty Pair__. group_by was done on the inner join dataset to determine the number of transactions for each unique pairing of credit and loyalty card. To minimise cluttering in discovering the unique pairing respective credit to loyalty card, we have filtered the dataset for distinct pairing count >=2. Will use igraph to built a bipartite graph with nodes as credit and loyalty cards, where the edges connote transaction where both cards were used and the edge weight equal to the number of transactions. The bipartite graph was shown below.
+
+```{r message = FALSE, warning= FALSE, fig.width=80, fig.align="centre", fig.cap = "Bipartite"}
+
+#forming the bipartite graph
+bigraph <- ijoin %>% # filter out unique pairing and count
+  filter(ndist >= 2)%>%
+  group_by(last4ccnum,loyaltynum) %>%
+  summarise(weights=n()) %>%
+  mutate_at(c("weights"), as.numeric)%>%
+  arrange(loyaltynum) %>%
+  ungroup()
+
+#plot bipartite graph
+bg<- graph.data.frame(bigraph, directed = FALSE)
+V(bg)$type <- bipartite_mapping(bg)$type # assign vertex or nodes
+
+shape <- c("circle", "square")
+E(bg)$color[E(bg)$weights<=5] <- 'red'
+E(bg)$color[E(bg)$weights>5] <- 'sky blue'
+plot(bg, layout=layout.bipartite, 
+     vertex.color=c("orange","pink")[V(bg)$type+1], vertex.size=18, vertex.label.cex=9,
+     vertex.shape = shape[V(bg)$type+1],
+     edge.width = E(bg)$weights*5,
+     edge.label=E(bg)$weights, edge.label.cex=8, edge.label.color ="black")
 ```
 
 
