@@ -1,6 +1,6 @@
 name: "DataViz Assignment"
 title: "PLaywData"
-theme: happy.css
+#theme: happy.css
 description: |
   My DataViz Blog as part of SMU requirements
 output_dir: "_site"
