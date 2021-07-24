@@ -16,7 +16,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, fig.retina = 3)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, fig.retina = 3,layout="l-body", fig.height = 6*0.618, fig.align='centre')
 ```
 
 ```{r echo = FALSE, warning = FALSE}
@@ -377,7 +377,7 @@ gg
 
 2. __datatable__. Leveraging the datatable to zoom into potential vehicle ID where the timestamp was within 15mins of the transaction time. To streamline the data volume so that it was supportable by datetable, only the start point for respective trip would be used. The code chuck to determine the trip start point and datatable was appended below. 
 
-```{r layout="l-body"}
+```{r, echo=TRUE}
 cgps$trip <- as.integer(cgps$trip) # format to ease sorting
 cgps$id <- as.integer(cgps$id) 
 
@@ -502,21 +502,21 @@ glimpse(visfull_ds)
 
 Timevis would allow one to view and compared activities in time series. example the plot below allow one to determine activities for credit card 1286 was a good fit to geospatial tracking data of vehicle id 22. One could determine whether transacted location tally with the gps location  based on transacted timeline. However, the data set excluded loyalty card only transaction due to lack of time dimension. Nonetheless, one could use the tracking data to verify indeed whether the card holder present in the location for loyalty card only transaction. Nevertheless, one need to switch between tmap, tidygraph, datatable and timevis to find the most appropriate visualisation for the matching of owner for vehicle id and credit card.
 
-```{r,layout="l-body",fig.height = 6, fig.align='centre'}
+```{r, fig.align='centre'}
 # running timevis
-timevis(data = visfull_ds, groups=vis_gp)
+timevis::timevis(data = visfull_ds, groups=vis_gp, height="400px", width = "700px")
 ```
 
 Code chuck and datatable for geospatial tracking tagged with location naming.
 
-```{r, layout="l-body",fig.height = 6, fig.align='centre'}
+```{r}
 datatable( mgps %>% 
   dplyr::select(-count, -loctype, -lat, -long) %>% arrange(id,trip),
   filter ='top',
   options = list(
             columnDefs = list(list(className = 'dt-center', targets = "_all"))
             ),
-  colnames = c("Vehicle ID","Trip ID","Timestamp","Lat", "Long ", "Location")) %>%
+  colnames = c("Vehicle ID","Trip ID","Timestamp", "Location")) %>%
   formatStyle(0, target ='row',color = 'Black', backgroundColor = 'light green', lineHeight ='70%')
 ```
 ## 5.3  Additional Locations
@@ -875,7 +875,7 @@ fig
 
 The geospatial would assist to verify whether the card holder/vehicle owner did travel to the transacted location once mapping of credit card to vehicle ID was done with confidence. With that location information, one could possible gain insights on the whether individual card transaction was done by the card holder/vehicle owner. Nonetheless, GPS has it own inadequacy such as GPS errors. Moreover, the geospatial tracking provide additional insights on possible location that individual has traveled which was beyond the transacted locations.  
 
-Reference to location setting stipulated in section 5.3, a bar chart stipulated on location type was shown below. Code chuck was relatively similar to the above less some changes in the parameters, thus it would not be displayed here. From the chart, "NA" referred to inconsistent location due to GPS error. This largely happened to Vehicle ID 28 and less on 9. Truck 105 and 101 might violate company policy where trucks were not mean for personnel usage if visited to locations beyond the industrial sites were exclusive. Interesting, vehicle ID 15,24,13 and 21 less of ID 35,25,34,23 traveled beyond those identified transactions locations.  
+Reference to location setting stipulated in section 5.3, a bar chart stipulated on location type was shown below. Code chuck was relatively similar to the above less some changes in the parameters, thus it would not be displayed here. From the chart, "NA" referred to inconsistent location due to GPS error. This largely happened to Vehicle ID 28 and less on 9. Truck 105 and 101 might violate company policy where trucks were not mean for personnel usage if visited to locations beyond the industrial sites were exclusive. Interestingly, vehicle ID 15,24,13 and 21 less of ID 35,25,34,23 traveled beyond those identified transactions locations.  
 
 ```{r, echo=FALSE }
 data <- mgps %>% count(id, loctype)%>%mutate(loctype=ifelse(is.na(loctype),"NA",loctype))
@@ -898,5 +898,7 @@ fig <- fig %>% layout( title = 'Numnber of Travelled Locations based on Vehcile 
                         bordercolor = '#C0C0C0'),
           barmode = 'stack')
 fig
+htmltools::tagList(list(fig))
 ```
 
+Th
