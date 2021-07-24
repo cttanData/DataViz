@@ -16,11 +16,11 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, fig.retina = 3,layout="l-body", fig.height = 6*0.618, fig.align='centre')
+knitr::opts_chunk$set(message = FALSE, fig.retina = 3,layout="l-body", fig.height = 6*0.618, fig.align='centre')
 ```
 
 ```{r echo = FALSE, warning = FALSE}
-packages <- c('sf','tidyverse', 'igraph', 'plotly', 'ggiraph','lubridate', 'clock', 'ggraph', 'DT', 'tmap','visNetwork','tidygraph',"timevis")
+packages <- c('sf','tidyverse', 'igraph', 'plotly', 'ggiraph','lubridate', 'clock', 'ggraph',"leaflet", 'tmap', 'visNetwork', 'tidygraph', "timevis", "DT")
 for (p in packages){
   if(!require(p, character.only = T)){
     install.packages(p)
@@ -61,7 +61,7 @@ The investigation will be done in 3 main steps:
 ## 4.1 Credit and Loyalty Cards.
 For credit and loyalty cards csv files, its contained transaction timestamp, location, price and card number. The timestamp within the files was in different formation eg %m/%d/%Y vs %m/%d/%y etc and credit card came with transacted date and time as compared loyalty only have date. Perform required data wrangling based on observation to resolve the datetime format (i.e. using lubridate and clock) and set card numbers as character. In addition, create date (i.e. Date, rename timestamp in loyalty card to date), weekday and hour for subsequent EDA. Code chuck and glimpse of prepared credit card dataset:
 
-```{r, clean up credit, echo= TRUE}
+```{r clean up credit}
 credit <- read_csv("data/aspatial/cc_data.csv")
 
 #cleaning up on datetime format, since there is %y vs %Y. Try to use ifelse but syntac error that cant be resolved
@@ -91,7 +91,7 @@ glimpse(credit)
 
 A much more simplify code of the above mentioned was used to prepare the loyalty card data set. 
 
-```{r, clean up loyalty card, echo=TRUE}
+```{r, clean up loyalty card}
 
 loyalty <- read_csv("data/aspatial/loyalty_data.csv")
 
@@ -116,7 +116,7 @@ As previous, necessary conversion of Timestamp and id variables to the proper da
 
 Code chuck for determine the trip within the days for respective vehicle ID.
 
-```{r, Determine Veh Trip, eval=FALSE, echo=TRUE}
+```{r, Determine Veh Trip, eval=FALSE}
 gps <- read_csv("data/aspatial/gps.csv")
 
 #covert to appropriate datetype for timestamp
@@ -164,7 +164,7 @@ cgps$trip = as.character(cgps$trip)
 
 Code chuck for conversion to sf dataframe for display in tmap.
 
-```{r, echo=TRUE}
+```{r}
 bgmap<- raster::raster("data/geospatial/MC2-tourist_modified.tif")
 
 gps_sf <- st_as_sf(cgps, coords = c("long","lat"), crs = 4326) # should form geometric data first
@@ -184,7 +184,7 @@ gps_points <- gps_sf %>%
 
 Code chuck for plotting a trip for example Veh ID 3.
 
-```{r, layout="l-body",fig.height = 6, fig.align='centre', warning = FALSE, echo=TRUE }
+```{r, warning = FALSE}
 
 gps_lines_s <- gps_lines %>%
   filter(id==3, trip==6)
@@ -200,7 +200,7 @@ tm_shape(bgmap) +
   tm_lines(col = "navy", lwd=2, alpah=0.7)
 
 ```
-```{r, warning=FALSE, message= FALSE, eval=FALSE}
+```{r, warning=FALSE, message= FALSE, eval=FALSE,echo = FALSE}
 gps_points_s <- gps_points %>% 
    filter(id==5, trip==2)
 
@@ -276,7 +276,8 @@ shape <- c("circle", "square")
 E(bg)$color[E(bg)$weights<=5] <- 'red'
 E(bg)$color[E(bg)$weights>5] <- 'sky blue'
 ```
-```{r message = FALSE,layout="l-body",fig.height = 6, fig.align ="centre", fig.cap = "Bipartite Graph of Credit(Orange) and Loyalty(Pink) Cards.", warning = FALSE}
+
+```{r message = FALSE,layout="l-body", warning = FALSE}
 plot(bg, layout=layout.bipartite, 
      vertex.color=c("orange","pink")[V(bg)$type+1], vertex.size=20, vertex.label.cex=0.8,
      vertex.shape = shape[V(bg)$type+1],
@@ -293,7 +294,7 @@ rm(mapping, bg, bigraph)
 
 From the bipartite graph, L6267 was used by both credit cards 6691 and 6899. That could account for the short of one loyalty card as in Section 4. There should be some form of relationship between credit card 1286 and 9241 holders given the high usage of the latter loyalty card by the former. Nonetheless, 1283 will be tagged to L3572. Moving on, credit card would be used as the anchoring point for exploration where its pairing to loyalty card would be based on the established relationship here. The established pairing was saved in a csv file for future usage.  
 
-```{r, forming the full file for credit and loyalty, warning= FALSE} 
+```{r, forming the full file for credit and loyalty, warning= FALSE,echo = FALSE} 
 # load the mapping of relationship generate the relationship link
 mapping <- read_csv("data/aspatial/mapping.csv")
 mapping$tmpC <- as.character(mapping$tmpC)
@@ -377,7 +378,7 @@ gg
 
 2. __datatable__. Leveraging the datatable to zoom into potential vehicle ID where the timestamp was within 15mins of the transaction time. To streamline the data volume so that it was supportable by datetable, only the start point for respective trip would be used. The code chuck to determine the trip start point and datatable was appended below. 
 
-```{r, echo=TRUE}
+```{r}
 cgps$trip <- as.integer(cgps$trip) # format to ease sorting
 cgps$id <- as.integer(cgps$id) 
 
@@ -386,12 +387,12 @@ tmp <- cgps %>% group_by(id,trip) %>% # to find trip start point by group_by id 
   filter(count>1) %>% dplyr::select(-count) %>%
   arrange(id, trip)
 ```
-```{r,layout="l-page"}
+
+```{r}
 datatable(tmp, filter ='top',class = 'cell-border stripe',rownames=FALSE,
            options = list(autoWidth = TRUE, columnDefs = list(list(className = 'dt-center', targets = "_all"))),
            colnames = c("Vehicle ID","Trip ID", "Timestamp","Lat", "Long ")) %>%
   formatStyle(0, target ='row',color = 'Black', backgroundColor = 'light green', lineHeight ='70%')
-
 ```
 3. __tmap__. With the information obtained above, explore the likely vehicle id tracking data via visual matching via tmap plotting and filtering for vehicle id and trip information in tmap. (same source code as in Section 3) 
 
@@ -497,26 +498,25 @@ visfull_ds <- full_ds %>% filter(id %in% c("6899","5")) %>%
 vis_gp <- visfull_ds%>% dplyr::select(group,cid) %>%
  rename(id = group, content = cid) %>% group_by(id,content) %>% summarise(count=n())
 
-glimpse(visfull_ds)
 ```
 
 Timevis would allow one to view and compared activities in time series. example the plot below allow one to determine activities for credit card 1286 was a good fit to geospatial tracking data of vehicle id 22. One could determine whether transacted location tally with the gps location  based on transacted timeline. However, the data set excluded loyalty card only transaction due to lack of time dimension. Nonetheless, one could use the tracking data to verify indeed whether the card holder present in the location for loyalty card only transaction. Nevertheless, one need to switch between tmap, tidygraph, datatable and timevis to find the most appropriate visualisation for the matching of owner for vehicle id and credit card.
 
-```{r, fig.align='centre'}
-# running timevis
-timevis::timevis(data = visfull_ds, groups=vis_gp, height="400px", width = "700px")
+```{r}
+timevis(data = visfull_ds, groups=vis_gp, height="400px", width = "700px")
 ```
 
 Code chuck and datatable for geospatial tracking tagged with location naming.
 
-```{r}
+```{r, echo=TRUE}
 datatable( mgps %>% 
-  dplyr::select(-count, -loctype, -lat, -long) %>% arrange(id,trip),
-  filter ='top',
-  options = list(
-            columnDefs = list(list(className = 'dt-center', targets = "_all"))
+             dplyr::select(-count, -loctype, -lat, -long) %>% arrange(id,trip),
+           rownames = FALSE,
+           filter ='top',
+           options = list(
+             columnDefs = list(list(className = 'dt-center', targets = "_all"))
             ),
-  colnames = c("Vehicle ID","Trip ID","Timestamp", "Location")) %>%
+           colnames = c("Vehicle ID","Trip ID","Timestamp", "Location")) %>%
   formatStyle(0, target ='row',color = 'Black', backgroundColor = 'light green', lineHeight ='70%')
 ```
 ## 5.3  Additional Locations
@@ -585,7 +585,7 @@ datatable( fjoin %>%
   options = list(
             columnDefs = list(list(className = 'dt-center', targets = "_all"))
             ),
-  colnames = c("DateTime","Location","Price($)","Credit Card No.", "Loyalty Card No.", "Transacted Card")) %>%
+  colnames = c("Location","Price($)","Credit Card No.", "Loyalty Card No.", "Transacted Card")) %>%
   formatStyle(0, target ='row',color = 'Black', backgroundColor = 'light green', lineHeight ='70%')
 ```
 
@@ -873,7 +873,55 @@ fig
 
 ## 6.2 Inclusion of Vehicle Geospatial Tracking Data
 
-The geospatial would assist to verify whether the card holder/vehicle owner did travel to the transacted location once mapping of credit card to vehicle ID was done with confidence. With that location information, one could possible gain insights on the whether individual card transaction was done by the card holder/vehicle owner. Nonetheless, GPS has it own inadequacy such as GPS errors. Moreover, the geospatial tracking provide additional insights on possible location that individual has traveled which was beyond the transacted locations.  
+The geospatial would assist to verify whether the card holder/vehicle owner did travel to the transacted location once mapping of credit card to vehicle ID was done with confidence. With that location information, one could possible gain insights on the whether individual card transaction was done by the card holder/vehicle owner. Nonetheless, GPS has it own inadequacy such as GPS errors. Moreover, the geospatial tracking provide additional insights on possible location that individual has traveled which was beyond the transacted locations.
+
+### 6.2.1 Resolving Individual Card Transaction.
+
+1. __Kornos Mart__. Timestamp for credit card was late by Xhrs compared to charing on loyalty card. 
+
+```{r}
+g <- fjoin %>% filter(ccard  %in% c("6816")) %>% arrange(ccard, timestamp) %>%
+  separate(timestamp, into = c("dat","time"), sep=" ",remove = FALSE) %>%
+  ggplot(aes(x = reorder(location, hr), fill=cardtype)) + 
+  geom_bar_interactive(aes(tooltip = time), width=0.5) + 
+  facet_grid(ccard~day, scale = 'free') +
+  scale_fill_manual(values=c("#1569C7", "orange", "green"))+
+  scale_y_continuous(breaks=seq(0,2,1)) +
+  labs(title = "Transaction Timestamp at Locations for Credit Card No.",
+       y="No. of Transaction",
+       x="",
+       fill="Card Type") + 
+  theme_classic()+ 
+  theme(axis.text.x = element_text(size=6,angle=90, vjust= 0.9),
+        axis.text.y = element_text(size=6),
+        axis.title.y = element_text(size=6),
+        panel.grid.minor = element_blank(),
+        legend.direction="vertical",
+        legend.title = element_text(color = "blue", size = 8),
+        legend.background = element_rect(fill = "light yellow"),
+        legend.text=element_text(size=7),
+        legend.key = element_rect(size = 0.5),
+        legend.key.size = unit(0.8, 'lines'),
+        plot.title = element_text(size=10,hjust = 0.5,face="bold")
+        )
+gg <- girafe(ggobj=g, width_svg = 6, height_svg=6*0.618)
+gg <- girafe_options(gg, opts_tooltip(opacity = .9,
+                                    offx = 20, offy = -10, use_fill = TRUE, use_stroke = TRUE,
+                                    delay_mouseout = 1000) )
+gg
+```
+
+```{r}
+# filter and grouping code chuck for timevis
+visfull_ds <- full_ds %>% filter(id %in% c("6816","20")) %>% 
+  mutate(group = id) %>%
+  rename(content=location, start=timestamp, cid = id ) %>%
+  filter(!is.na(start))
+
+vis_gp <- visfull_ds%>% dplyr::select(group,cid) %>%
+ rename(id = group, content = cid) %>% group_by(id,content) %>% summarise(count=n())
+
+```
 
 Reference to location setting stipulated in section 5.3, a bar chart stipulated on location type was shown below. Code chuck was relatively similar to the above less some changes in the parameters, thus it would not be displayed here. From the chart, "NA" referred to inconsistent location due to GPS error. This largely happened to Vehicle ID 28 and less on 9. Truck 105 and 101 might violate company policy where trucks were not mean for personnel usage if visited to locations beyond the industrial sites were exclusive. Interestingly, vehicle ID 15,24,13 and 21 less of ID 35,25,34,23 traveled beyond those identified transactions locations.  
 
@@ -901,4 +949,4 @@ fig
 htmltools::tagList(list(fig))
 ```
 
-Th
+The geospaital data would 
