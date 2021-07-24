@@ -8,7 +8,9 @@ author:
 date: 06-28-2021
 output:
   distill::distill_article:
+    self_contained: false
     toc: true
+    theme: happy.css
     toc_depth: 2
     toc_float: true
 ---
@@ -375,8 +377,8 @@ gg
 
 2. __datatable__. Leveraging the datatable to zoom into potential vehicle ID where the timestamp was within 15mins of the transaction time. To streamline the data volume so that it was supportable by datetable, only the start point for respective trip would be used. The code chuck to determine the trip start point and datatable was appended below. 
 
-```{r,layout="l-body"}
-cgps$trip <- as.integer(cgps$trip) # formate to ease sorting
+```{r layout="l-body"}
+cgps$trip <- as.integer(cgps$trip) # format to ease sorting
 cgps$id <- as.integer(cgps$id) 
 
 tmp <- cgps %>% group_by(id,trip) %>% # to find trip start point by group_by id and trip 
@@ -509,14 +511,13 @@ Code chuck and datatable for geospatial tracking tagged with location naming.
 
 ```{r, layout="l-body",fig.height = 6, fig.align='centre'}
 datatable( mgps %>% 
-  dplyr::select(-count, -loctype) %>% arrange(id,trip),
+  dplyr::select(-count, -loctype, -lat, -long) %>% arrange(id,trip),
   filter ='top',
   options = list(
             columnDefs = list(list(className = 'dt-center', targets = "_all"))
             ),
   colnames = c("Vehicle ID","Trip ID","Timestamp","Lat", "Long ", "Location")) %>%
   formatStyle(0, target ='row',color = 'Black', backgroundColor = 'light green', lineHeight ='70%')
-
 ```
 ## 5.3  Additional Locations
 
@@ -578,7 +579,7 @@ fig
 
 ```{r}
 datatable( fjoin %>% 
-  dplyr::select(timestamp, location, price,last4ccnum, loyaltynum, cardtype),
+  dplyr::select(location, price,last4ccnum, loyaltynum, cardtype),
   #filter(cardtype !="both") %>%
   filter ='top',class = 'cell-border stripe',rownames=FALSE,
   options = list(
