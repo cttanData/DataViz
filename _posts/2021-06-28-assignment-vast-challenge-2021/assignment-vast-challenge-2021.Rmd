@@ -16,6 +16,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, fig.retina = 3)
 ```
+
 ```{r echo = FALSE, warning = FALSE}
 packages <- c('sf','tidyverse', 'igraph', 'plotly', 'ggiraph','lubridate', 'clock', 'ggraph', 'DT', 'tmap','visNetwork','tidygraph',"timevis")
 for (p in packages){
@@ -58,7 +59,7 @@ The investigation will be done in 3 main steps:
 ## 4.1 Credit and Loyalty Cards.
 For credit and loyalty cards csv files, its contained transaction timestamp, location, price and card number. The timestamp within the files was in different formation eg %m/%d/%Y vs %m/%d/%y etc and credit card came with transacted date and time as compared loyalty only have date. Perform required data wrangling based on observation to resolve the datetime format (i.e. using lubridate and clock) and set card numbers as character. In addition, create date (i.e. Date, rename timestamp in loyalty card to date), weekday and hour for subsequent EDA. Code chuck and glimpse of prepared credit card dataset:
 
-```{r, clean up credit}
+```{r, clean up credit, echo= TRUE}
 credit <- read_csv("data/aspatial/cc_data.csv")
 
 #cleaning up on datetime format, since there is %y vs %Y. Try to use ifelse but syntac error that cant be resolved
@@ -87,7 +88,8 @@ glimpse(credit)
 ```
 
 A much more simplify code of the above mentioned was used to prepare the loyalty card data set. 
-```{r, clean up loyalty card}
+
+```{r, clean up loyalty card, echo=TRUE}
 
 loyalty <- read_csv("data/aspatial/loyalty_data.csv")
 
@@ -111,7 +113,8 @@ rm(p,pack)
 As previous, necessary conversion of Timestamp and id variables to the proper data type. To ease the mapping of location to geospatial values, decided to round off its value to four decimal places. The main focus was to determine the trip within the geospatial tracking dataset for respective vehicle ID. Trip was defined as a continues traveling from point A to B with time lag less than 300secs. 300 secs was arbitrary decided based on screening through the data set. With the trip formed, one could determine the traveling locations for respective veh ID overtimes.  
 
 Code chuck for determine the trip within the days for respective vehicle ID.
-```{r, Determine Veh Trip, eval=FALSE}
+
+```{r, Determine Veh Trip, eval=FALSE, echo=TRUE}
 gps <- read_csv("data/aspatial/gps.csv")
 
 #covert to appropriate datetype for timestamp
@@ -158,7 +161,8 @@ cgps$trip = as.character(cgps$trip)
 ```
 
 Code chuck for conversion to sf dataframe for display in tmap.
-```{r}
+
+```{r, echo=TRUE}
 bgmap<- raster::raster("data/geospatial/MC2-tourist_modified.tif")
 
 gps_sf <- st_as_sf(cgps, coords = c("long","lat"), crs = 4326) # should form geometric data first
@@ -169,15 +173,16 @@ gps_lines <- gps_sf %>%
   st_cast("MULTILINESTRING")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 gps_points <- gps_sf %>% 
   group_by(id,trip) %>%
   summarize(m = mean(Timestamp), do_union=FALSE) %>%
   st_cast("POINT")
 ```
 
-Code chuck for plotting a trip for example Veh ID 3.  
-```{r, layout="l-body",fig.height = 6, fig.align='centre', warning = FALSE }
+Code chuck for plotting a trip for example Veh ID 3.
+
+```{r, layout="l-body",fig.height = 6, fig.align='centre', warning = FALSE, echo=TRUE }
 
 gps_lines_s <- gps_lines %>%
   filter(id==3, trip==6)
@@ -221,11 +226,13 @@ uniLL <- length(unique(loyalty$location))
 dCLL <- credit$location[!(credit$location %in% loyalty$location)]
 dCLP <- credit$price[!(credit$location %in% loyalty$location)]
 ```
+
 Reference to the company employee records in challenge 1, GASTech has 54 staffs. However, unique count on the credit and loyalty card numbers has shown `r uniC` and `r uniL` count respectively. Its alluded that one of the staff could have 2 credit cards. Moreover,a unique count on the number of transacted locations for each data set has shown that there were `r uniCL` and `r uniLL` locations for credit and loyalty card respectively. The additional location in credit card data set "`r dCLL`" with a transaction amount "`r dCLP`".
 
 To merge both data sets, would determine the common set via inner join operations based on date, location and price. It observed that inner join has 1087 observations, while anti join has 409 and 311 disjoint for credit and loyalty card transaction respectively. The inner join has created 6 extra observations (1392 data points from loyalty - anti join 311 = 1081 or 1490 data points from credit - anti join 409 = 1081) due to observations having similar values defined for the inner join operation. The duplicated observations were identified and deleted. It also validated that the inner join contained the full set of credit and loyalty cards numbers and thus would be used to determine the unique pairing of credit to loyalty card. In addition, it also discerned that the inner join did not contain Kronos Mart and Daily Dealz as the transaction location. This implied that transactions at these two locations likely done by either of the card only.  
 
 Code chuck for inner join and finding distinct pair.
+
 ```{r, inner join Credit and Loyalty to determine relationship}
 ijoin <- credit %>%
   inner_join(loyalty,by=c('date','location','price','day')) %>%
@@ -368,7 +375,7 @@ gg
 
 2. __datatable__. Leveraging the datatable to zoom into potential vehicle ID where the timestamp was within 15mins of the transaction time. To streamline the data volume so that it was supportable by datetable, only the start point for respective trip would be used. The code chuck to determine the trip start point and datatable was appended below. 
 
-```{r,layout="l-page"}
+```{r,layout="l-body"}
 cgps$trip <- as.integer(cgps$trip) # formate to ease sorting
 cgps$id <- as.integer(cgps$id) 
 
@@ -432,7 +439,8 @@ rm(tmpe,tmps)
 
 Manually, one could start to triangulate the matching of credit card with vehicle id by using following visualisation aid: 
 
-1. __Plot via tidygraph, ggirafe or ploty__. Focus on the transaction location and timestamp of respective card holders. 
+1. __Plot via tidygraph, ggirafe or ploty__. Focus on the transaction location and timestamp of respective card holders.
+
 ```{r}
 g <- fjoin %>% filter(ccard  %in% c("6899")) %>% arrange(ccard, timestamp) %>%
   separate(timestamp, into = c("dat","time"), sep=" ",remove = FALSE) %>%
@@ -492,14 +500,14 @@ glimpse(visfull_ds)
 
 Timevis would allow one to view and compared activities in time series. example the plot below allow one to determine activities for credit card 1286 was a good fit to geospatial tracking data of vehicle id 22. One could determine whether transacted location tally with the gps location  based on transacted timeline. However, the data set excluded loyalty card only transaction due to lack of time dimension. Nonetheless, one could use the tracking data to verify indeed whether the card holder present in the location for loyalty card only transaction. Nevertheless, one need to switch between tmap, tidygraph, datatable and timevis to find the most appropriate visualisation for the matching of owner for vehicle id and credit card.
 
-```{r}
+```{r,layout="l-body",fig.height = 6, fig.align='centre'}
 # running timevis
 timevis(data = visfull_ds, groups=vis_gp)
 ```
 
 Code chuck and datatable for geospatial tracking tagged with location naming.
 
-```{r}
+```{r, layout="l-body",fig.height = 6, fig.align='centre'}
 datatable( mgps %>% 
   dplyr::select(-count, -loctype) %>% arrange(id,trip),
   filter ='top',
@@ -512,7 +520,7 @@ datatable( mgps %>%
 ```
 ## 5.3  Additional Locations
 
-During the EDA, its discern there were location within the geospatial tracking data not associated with the transaction locations such as office GASTech, residential for respective vehicle id etc. To determine the location for respective vehicle id, one could find the start and end points for each day from the geospatial tracking data and then determined the most likely residential location. Thereafter map the residential naming to the dataset again. For those remaining unidentified, would use tmap for visual aid and assigned an arbitrary naming to the location. See code chuck for determine home location. To support EDA further, the locations was tagged with appropriate 4 types in a new column "loctype". u.e. o=office, T = transaction locations, N = non transaction location, H = home, I= industrial locations.       
+During the EDA, its discern there were location within the geospatial tracking data not associated with the transaction locations such as office GASTech, residential for respective vehicle id etc. To determine the location for respective vehicle id, one could find the start and end points for each day from the geospatial tracking data and then determined the most likely residential location. Thereafter map the residential naming to the dataset again. For those remaining unidentified, would use tmap for visual aid and assigned an arbitrary naming to the location. See code chuck for determine home location. To support EDA further, the locations was tagged with appropriate 4 types in a new column "loctype". u.e. Office, Transacted location, Unknown = non transaction location, Residential = home, Industry = airports, scrapyard.       
 
 ```{r , finding start and end point for each ID}
 # cgps = clean gps data 
@@ -535,7 +543,6 @@ rm(tmpe, tmps)
 ## 5.4 Exploring Relationship
 
 To explore relationship among the employee, tidygraph, ggraph, igraph and visNetwork would be used. Nonetheless, numerous data preparation needed to support the visualisation. Sample of a visIgraph was appended below. 
-
 
 
 # 6.0 Exploration Sharing 
@@ -579,10 +586,11 @@ datatable( fjoin %>%
             ),
   colnames = c("DateTime","Location","Price($)","Credit Card No.", "Loyalty Card No.", "Transacted Card")) %>%
   formatStyle(0, target ='row',color = 'Black', backgroundColor = 'light green', lineHeight ='70%')
-
 ```
+
 EDA was done on the data set from the above mentioned table. One interesting observation was that Korons Mart and Daily Deals (i.e. 18 and 1 transactions) were places where transactions were performed with either one card only (See Chart Below) as compared to others. In Korons Mart, there seemed to be a pattern where a card holder after a transaction with only loyalty card would have a next day transaction with credit card only . This was different from most scenarios like in Frydos Autosupply, where the main discerned pattern was that individual cards transacted on similar day or it just sporadic transactions.
-```{r}
+
+```{r, layout="l-body",fig.height = 6, fig.align='centre'}
 g <- fjoin %>%
   filter (location=="Kronos Mart") %>% 
   ggplot(aes(x=day, fill=cardtype)) + 
@@ -687,7 +695,8 @@ p <- fjoin %>% filter (location=="Katerina Cafe")  %>%
 girafe(ggobj=p, width_svg = 6, height_svg=6*0.618)
 ```
 
-When EDA further on the time dimension in day /work day, one could observe that selected locations only have either weekday or weekend transactions. Weekend only transactions were normally associated with recreational like museum, golf course etc. Generally, pace was much slower in the week end as compared to week day especially in the morning.  
+When EDA further on the time dimension in day /work day, one could observe that selected locations only have either weekday or weekend transactions. Weekend only transactions were normally associated with recreational like museum, golf course etc. Generally, pace was much slower in the week end as compared to week day especially in the morning.
+
 ```{r, location vs day} 
 p <- fjoin %>% count(day, location) %>% arrange(desc(n)) %>%
   ggplot(aes(x=day, y=reorder(location,n, sum), fill = n)) +
@@ -713,9 +722,9 @@ p <- fjoin %>% count(day, location) %>% arrange(desc(n)) %>%
         legend.key.size = unit(0.8, 'lines'),
         plot.title = element_text(size=8,hjust = 0.5,face="bold"))
 
-#tooltip_css <- "background-color:gray;color:white;font-style:italic;padding:10px;border-radius:1px;"
 girafe(ggobj=p, width_svg = 6, height_svg=6*0.618)
 ```
+
 For weekday only transaction, its could categorise into 2 groups, namely industrial vs cafe locations. For industrial locations, it seemed that there were a planned routine for GAStech personnel to visit them. In addition, the GAStech personnel visited most of coffee related cafes only during weekday and in particular at the morning session.
 
 ```{r, industrial locations} 
@@ -752,7 +761,7 @@ girafe(ggobj=p, width_svg = 6, height_svg=6*0.618)
 
 When delved into transaction time, there were interesting patterns being detected. Example, Kronos Mart was the only place with transaction at 3am+. Series of cafe like Bean There Done That, Jack Magical Beans etc have only 12pm sharp transactions which assessed to be abnormal.(Could verify with the data table provided above) Going through the tooltips in the time plot, one could also determine the peak hours based on transaction vol for the specific location if any.  
 
-```{r, location vs hr } 
+```{r, location vs hr, layout="l-body",fig.height = 6, fig.align='centre'} 
 p <- fjoin %>% count(hr, location) %>% arrange(desc(n)) %>%
   ggplot(aes(x=hr, y=reorder(location, n, sum), fill = n)) +
   geom_tile_interactive(aes(tooltip = n, data_id = location ), colour="white") +
@@ -785,7 +794,7 @@ girafe(ggobj=p, width_svg = 6, height_svg=6*0.618)
 
 It also observed that most card holders have favourite locations that they would patronise very frequently for breakfast, lunch or dinner. For example credit card holders "4434" and "6816",  Brew Served and Guy Gyros. So any deviation from the patterns could potential connote anomalies. 
 
-```{r}
+```{r,layout="l-body",fig.height = 6, fig.align='centre'}
 fjoin %>% filter(ccard  %in% c("4434")) %>%
   ggplot(aes(x = location, fill=cardtype)) +
   geom_bar_interactive(aes(tooltip = hr), width=0.5) + 
@@ -865,12 +874,13 @@ fig
 
 The geospatial would assist to verify whether the card holder/vehicle owner did travel to the transacted location once mapping of credit card to vehicle ID was done with confidence. With that location information, one could possible gain insights on the whether individual card transaction was done by the card holder/vehicle owner. Nonetheless, GPS has it own inadequacy such as GPS errors. Moreover, the geospatial tracking provide additional insights on possible location that individual has traveled which was beyond the transacted locations.  
 
-Reference to location setting stipulated in section 5.3, a bar chart stipulated on location type was shown below. Code chuck was relatively similar to the above less some changes in the parameters. 
-From 
+Reference to location setting stipulated in section 5.3, a bar chart stipulated on location type was shown below. Code chuck was relatively similar to the above less some changes in the parameters, thus it would not be displayed here. From the chart, "NA" referred to inconsistent location due to GPS error. This largely happened to Vehicle ID 28 and less on 9. Truck 105 and 101 might violate company policy where trucks were not mean for personnel usage if visited to locations beyond the industrial sites were exclusive. Interesting, vehicle ID 15,24,13 and 21 less of ID 35,25,34,23 traveled beyond those identified transactions locations.  
+
 ```{r, echo=FALSE }
-data <- mgps %>% count(id, loctype) 
-fig <- plot_ly(data, x = ~reorder(id,-n,sum), y = ~n, type = 'bar', name = ~loctype,
-               colours=c("grey","sky blue","blue", "pink", "orange", "green"))
+data <- mgps %>% count(id, loctype)%>%mutate(loctype=ifelse(is.na(loctype),"NA",loctype))
+fig <- plot_ly(data, x = ~reorder(id,-n,sum), y = ~n, type = 'bar', name = ~loctype, color = ~loctype,
+               colors=c("steel blue","grey 50","orange","sky blue","yellow green", "red")
+               )
 fig <- fig %>% layout( title = 'Numnber of Travelled Locations based on Vehcile ID',
           xaxis = list(title = "Vehicle ID",
                        tickfont = list(
