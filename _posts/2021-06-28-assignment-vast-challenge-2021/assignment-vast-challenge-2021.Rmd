@@ -605,8 +605,58 @@ rm(tmpe, tmps, loc_gps)
 
 ## 5.4 Exploring Relationship
 
-To explore relationship among the employee, tidygraph, ggraph, igraph and visNetwork would be used. Nonetheless, numerous data preparation needed to support the visualisation. Sample of a visIgraph was appended below. 
+To explore relationship among the employee, tidygraph, ggraph, igraph and visNetwork would be used. Nonetheless, numerous data preparation needed to support the visualisation. Sample of a visNetwork was appended below. The transaction data was filter off those whom were truck driver and create a new column period to determining morning, afternoon and night activities. The whole date set was prepared in accordance to the format required by visNetwork for consumption. However, visNetwork might be too messy to manage and thus the exploration here might resolve to visIgraph. 
 
+```{r, prepare the nodes graph} 
+pers_nodes <- read_csv("data/aspatial/employee_nodes.csv")
+pers_nodes <- pers_nodes%>%rename(group = department)
+ccard_edges <- fjoin %>%
+  filter (!(ccard %in% c("9614","8642","7792",
+                         "2276","9152","4530",
+                         "9735","9220","3506"))) %>%
+  mutate(period = ifelse(hr<=11,"AM", 
+                         ifelse(hr>=18, "NT","PM" ))) %>%
+  group_by(ccard,location,period,Department)%>% 
+  summarise(weight=n()) %>%
+  ungroup()
+tmp <- pers_nodes%>%dplyr::select(id,label)
+gccard_edges <- ccard_edges %>%
+  left_join(tmp,by=c("location"="label" )) %>%
+  rename(to = id) %>%
+  left_join(tmp,by=c("ccard"="label" )) %>%
+  rename(from = id) %>%
+  filter(!is.na(from))%>%
+  filter(!is.na(to)) %>%
+  #filter(Department=="Engineering") %>%
+  relocate(from, to,weight, .before=ccard)
+gccard_edges$from <- as.numeric(gccard_edges$from)
+gccard_edges$to <- as.numeric(gccard_edges$to)
+```
+
+```{r}
+visNetwork(pers_nodes,gccard_edges) %>%
+  #visIgraphLayout(layout = "layout_nicely", physics = ) %>%
+  visEdges(smooth = FALSE) %>%
+  visGroups(groupname = "Security", color="darkred",
+            shape = "square", 
+            shadow = list(enabled = TRUE)) %>% 
+  visGroups(groupname = "Information Technology", color="darkyellow", 
+            shape = "circle",
+            shadow = list(enabled = TRUE)) %>%
+  visGroups(groupname = "Engineering", color="light blue",
+            shape ="triangle") %>% 
+  visGroups(groupname = "Executive", color= "orange",
+            shape ="star",
+            shadow = list(enabled = TRUE)) %>%
+  visOptions(selectedBy = "group",
+             highlightNearest = TRUE, 
+             nodesIdSelection = TRUE,) %>%
+  visLayout(randomSeed = 123)%>%
+  visInteraction(hideEdgesOnDrag = TRUE) %>%
+  visPhysics(solver = "forceAtlas2Based", 
+          forceAtlas2Based = list(gravitationalConstant = -200))
+
+```
 
 # 6.0 Exploration Sharing 
 
@@ -1027,7 +1077,7 @@ timevis::timevis(data = visfull_ds, groups=vis_gp,
 2. __The Myth of 12pm Cafe__. From the chart below for vehicle id 5 and credit card 6899 (i.e.same owner), one could observe that vehicle left Jack Magical Beam in the morning whenever there was a captured transaction and not 12pm timestamp under the transaction records. Need to investigate those locations to determine whether the difference in credit card timestamp was due to system error or someone foul play. The timestamp for the vehicle id plot connotted the time the vehicle left the place of location.
 
 ```{r echo =FALSE}
-g <- fjoin %>% filter(ccard  %in% c("6899")) %>%
+g <- fjoin %>% filter(ccard  %in% c("6899")) %>%#6899
   arrange(ccard, timestamp) %>%
   separate(timestamp, into = c("dat","time"), sep=" ",
            remove = FALSE) %>%
@@ -1381,4 +1431,122 @@ As reference to section 5.1, would conclude that the mapping of credit to loyalt
 
 
 
+## 6.3 Relationship.
 
+Technical there were two means to determine the relationship, via the transaction or geographical tracking. Code chuck to explore the relationship via department (security) for morning preiod  was appended below and using visIgraph.
+
+```{r} 
+gcloc <- fjoin %>% filter(!is.na(hr)) %>%
+  mutate(period = ifelse(hr<=11,"AM", ifelse(hr>=18, "NT","PM" ))) %>%
+  group_by(ccard,location,period,Department) %>%
+  summarise(weight=n()) %>%
+  ungroup() %>%
+  filter(Department=="Security") %>%
+  filter(period =="AM")
+gcl<- graph.data.frame(gcloc, directed = TRUE)
+V(gcl)$type <- bipartite_mapping(gcl)$type # assign vertex or nodes
+visIgraph(gcl) %>% visIgraphLayout(layout = "layout_as_bipartite") %>%
+  visNodes(size=15) %>%
+  visOptions(nodesIdSelection = TRUE,
+             highlightNearest = TRUE )
+
+DT::datatable( gcloc %>% arrange(desc(location)) %>%
+  dplyr::select(ccard, location, weight),
+  filter ='top',class = 'cell-border stripe',rownames=FALSE,
+  options = list(
+            columnDefs = list(list(className = 'dt-center',
+                                   targets = "_all"))
+            )) %>%
+  DT::formatStyle(0, target ='row',color = 'Black',
+                  backgroundColor = 'light green',
+                  lineHeight ='70%')
+```
+
+From the table and visIgraph, one could determine that most of the department has their own common hot spot for breakfast and lunch. However, there would always be an outlier where an individual do not really patronise the same. eg 7018 preferrence for Hallowed Ground as compared to Brew Served by the rest. It was also interesting to note that 4434 and 6816 have a breakfast meet up on 17 Jun at Coffee Cameleon as it was a deviation from the norm. That the combination of both would be very useful for us to determine some formal or informal relationship.   
+
+```{r, echo=FALSE} 
+gcloc <- fjoin %>% filter(!is.na(hr)) %>%
+  mutate(period = ifelse(hr<=11,"AM", ifelse(hr>=18, "NT","PM" ))) %>%
+  group_by(ccard,location,period,Department) %>%
+  summarise(weight=n()) %>%
+  ungroup() %>%
+  filter(Department=="Information Technology") #%>%
+  #filter(period =="AM")
+gcl<- graph.data.frame(gcloc, directed = TRUE)
+V(gcl)$type <- bipartite_mapping(gcl)$type # assign vertex or nodes
+visIgraph(gcl) %>% visIgraphLayout(layout = "layout_as_bipartite") %>%
+  visNodes(size=15) %>%
+  visOptions(nodesIdSelection = TRUE,
+             highlightNearest = TRUE )
+DT::datatable( gcloc %>% arrange(desc(location)) %>%
+  dplyr::select(ccard, location, weight),
+  filter ='top',class = 'cell-border stripe',rownames=FALSE,
+  options = list(
+            columnDefs = list(list(className = 'dt-center',
+                                   targets = "_all"))
+            )) %>%
+  DT::formatStyle(0, target ='row',color = 'Black',
+                  backgroundColor = 'light green',
+                  lineHeight ='70%')
+```
+
+On the contrary when explore into the morning session for information technology department, one could observed the department do not really have a common breakfast location. However, when explore further, they do have a common place that they would patronize for lunch. When plot the all the transaction activities, one of the beauty from the igraph bipartite plot was that it has somehow cluster the nodes into some form of community base on place of visits. One could discern that 6899 (veh ID 5), 7889 (veh ID 8) and 7384 (veh ID 17) could form a community. Thus the potential meet up of 7253 (GM Facilities) with 7899 (veh ID 8) on 17 in Kalami Kafenion might ring a bell. (i.e. based on observation on timestamp for vehicle ID, transaction records and time stamp) Could not deduce more as the study did not really zoom into whether they were together at the same time in those places. Timevis could be used to validate there when desire. 
+
+```{r, echo=FALSE} 
+gcloc <- fjoin %>% filter(!is.na(hr)) %>%
+  mutate(period = ifelse(hr<=11,"AM", ifelse(hr>=18, "NT","PM" ))) %>%
+  group_by(ccard,location,period,Department) %>%
+  summarise(weight=n()) %>%
+  ungroup() %>%
+  filter(Department=="Executive") #%>%
+  #filter(period =="PM")
+gcl<- graph.data.frame(gcloc, directed = TRUE)
+V(gcl)$type <- bipartite_mapping(gcl)$type # assign vertex or nodes
+visIgraph(gcl) %>% visIgraphLayout(layout = "layout_as_bipartite") %>%
+  visNodes(size=15) %>%
+  visOptions(nodesIdSelection = TRUE,
+             highlightNearest = TRUE )
+
+DT::datatable( gcloc %>% arrange(desc(location)) %>%
+  dplyr::select(ccard, location, weight),
+  filter ='top',class = 'cell-border stripe',rownames=FALSE,
+  options = list(
+            columnDefs = list(list(className = 'dt-center',
+                                   targets = "_all"))
+            )) %>%
+  DT::formatStyle(0, target ='row',color = 'Black',
+                  backgroundColor = 'light green',
+                  lineHeight ='70%')
+```
+
+When explore into the executive on above, they do not have a common place in the morning but they do for lunch. The graph above was based on all the transaction incurred by the executive over the period. It should be noted that the transaction records for 5010 i.e. CEO only from 17 to 19 Jan as it assessed that he might be overseas prior to that. Moreover he stayed in the hotel. It could be discerned that 8156 (COO) and 7688(CFO) seemed to have more common interest. However, 8156 and 2463 (ESA veh ID 35) regular breakfast place was Jack Magical Beans. 
+
+```{r, echo=FALSE} 
+gcloc <- fjoin %>% filter(!is.na(hr)) %>%
+  mutate(period = ifelse(hr<=11,"AM", ifelse(hr>=18, "NT","PM" ))) %>%
+  group_by(ccard,location,period,Department) %>%
+  summarise(weight=n()) %>%
+  ungroup() %>%
+  filter(Department=="Engineering") #%>%
+  #filter(period =="AM")
+gcl<- graph.data.frame(gcloc, directed = TRUE)
+V(gcl)$type <- bipartite_mapping(gcl)$type # assign vertex or nodes
+visIgraph(gcl) %>% visIgraphLayout(layout = "layout_as_bipartite") %>%
+  visNodes(size=15) %>%
+  visOptions(nodesIdSelection = TRUE,
+             highlightNearest = TRUE )
+DT::datatable( gcloc %>% arrange(desc(location)) %>%
+  dplyr::select(ccard, location, weight),
+  filter ='top',class = 'cell-border stripe',rownames=FALSE,
+  options = list(
+            columnDefs = list(list(className = 'dt-center',
+                                   targets = "_all"))
+            )) %>%
+  DT::formatStyle(0, target ='row',color = 'Black',
+                  backgroundColor = 'light green',
+                  lineHeight ='70%')
+```
+
+A quick look was that 1321 (veh ID 11) deemed to be in his own community based on place of interest. When zoom into breakfast session, 1415 (veh ID 2) and 9683 (veh ID 33, Brewed Served) tend to be alone and not i the common breakfast location Hallowed Grounds. 2142 and 3547 shared common breakfast interest at Coffee Cameleon . it also interesting to note that 2540 (veh ID 7, female) and 9683 (male) seemed to visit the hotel twice a week a during lunch time with some regular pattern. Other than them, the next person in the company that visited the hotel was the CEO.
+
+Re
