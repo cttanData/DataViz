@@ -641,7 +641,7 @@ visNetwork(pers_nodes,gccard_edges) %>%
   visGroups(groupname = "Security", color="darkred",
             shape = "square", 
             shadow = list(enabled = TRUE)) %>% 
-  visGroups(groupname = "Information Technology", color="darkyellow", 
+  visGroups(groupname = "Info Tech", color="light green", 
             shape = "circle",
             shadow = list(enabled = TRUE)) %>%
   visGroups(groupname = "Engineering", color="light blue",
@@ -1504,7 +1504,6 @@ DT::datatable( truck ,
 It would be good to verify whether the sudden purchased by 9614 on Friday 10 Jan was something approved by company to ensure no foul play. The actions by credit card 9614 was deemed as an anomaly when compared across the shift schedule.
 
 
-
 ## 6.4 Relationship.
 ## 6.4.1 Relationship Determine from Transactions
 
@@ -1545,7 +1544,7 @@ gcloc <- fjoin %>% filter(!is.na(hr)) %>%
   group_by(ccard,location,period,Department) %>%
   summarise(weight=n()) %>%
   ungroup() %>%
-  filter(Department=="Information Technology") #%>%
+  filter(Department=="Info Tech") #%>%
   #filter(period =="AM")
 gcl<- graph.data.frame(gcloc, directed = TRUE)
 V(gcl)$type <- bipartite_mapping(gcl)$type # assign vertex or nodes
@@ -1643,7 +1642,7 @@ visNetwork(pr_nodes,pr) %>%
   visGroups(groupname = "Security", color="red",
             shape = "square", 
             shadow = list(enabled = TRUE)) %>% 
-  visGroups(groupname = "Information Technology", color="green", 
+  visGroups(groupname = "Info Tech", color="green", 
             shape = "circle",
             shadow = list(enabled = TRUE)) %>%
   visGroups(groupname = "Engineering", color="darkyellow",
