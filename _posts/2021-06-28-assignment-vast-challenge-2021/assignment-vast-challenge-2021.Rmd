@@ -52,6 +52,7 @@ The main task is to identify suspicious patterns of behavior from the transactio
 
 # 3.0 Liteature Review and Approach
 
+Generally, the data set seemed to be very time series focus and attempting to determine relationship. Thus from a visualisation perspective, it would be good if [timeviz](https://github.com/daattali/timevis) and [visNetwork](https://datastorm-open.github.io/visNetwork/) based on network, graph and time dimension could be leveraged. However, such would required certain level of technical skillset. 
 
 The investigation will be done in 3 main steps:
 
@@ -562,7 +563,7 @@ timevis::timevis(data = visfull_ds, groups=vis_gp,
 
 Code chuck and datatable for geospatial tracking tagged with location naming.
 
-```{r,layout="l-body-outset"}
+```{r,layout="l-body"}
 DT::datatable( mgps %>% 
                  dplyr::select(-count, -loctype, -lat, -long) %>%
                  arrange(id,trip),
@@ -1993,7 +1994,7 @@ gg <- girafe_options(gg, opts_tooltip(opacity = .9,
 gg
 ```
 
-8.  __Meeting at Coffee Cameleon on 17 Jan Morning __. Good to further explore on the mentioned meeting by vehicle ID 24( credit card 4434, Security) and 20 (credit card 6816 Security). The place for meet up was deemed as a deviation from the usual place they would good for breakfast. In fact, when verify the chart, it was the first time, they been to the place. So it was just a coincidence or a planned activity?  
+8.  __Meeting at Coffee Cameleon on 17 Jan Morning __. Good to further explore on the mentioned meeting by vehicle ID 24( credit card 4434, Security) and 20 (credit card 6816 Security). The place for meet up was deemed as a deviation from the usual place they would good for breakfast. In fact, when verify the chart, it was the first time, they been to the place. So it was just a coincidence or a planned activity? There could be more of such meetings among the personnel which would require more  in depth exploration.
 
 ```{r, echo=FALSE} 
 
