@@ -1,12 +1,12 @@
 PersID,Name,Veh_ID,Credit,Loyalty,Gender,Department,Appt,Certainty ,FirstName,LastName
-1,Nils.Calixto,1,9551,L5777,Male,Information Technology,IT Helpdesk,2b,Nils,Calixto
+1,Nils.Calixto,1,9551,L5777,Male,Info Tech,IT Helpdesk,2b,Nils,Calixto
 2,Lars.Azada,2,1415,L7783,Male,Engineering,Engineer,1,Lars,Azada
 3,Felix.Balas,3,9635,L3191,Male,Engineering,Engineer,1,Felix,Balas
 4,Ingrid.Barranco,4,7688,L4164,Female,Executive,SVP/CFO,1,Ingrid,Barranco
-5,Isak.Baza,5,6899,L6267,Male,Information Technology,IT Technician,2b,Isak,Baza
-6,Linnea.Bergen,6,7253,L1682,Female,Information Technology,IT Group Manager,2a,Linnea,Bergen
+5,Isak.Baza,5,6899,L6267,Male,Info Tech,IT Technician,2b,Isak,Baza
+6,Linnea.Bergen,6,7253,L1682,Female,Info Tech,IT Group Manager,2a,Linnea,Bergen
 7,Elsa.Orilla,7,2540,L5947,Female,Engineering,Drill Technician,1,Elsa,Orilla
-8,Lucas.Alcazar,8,7889,L6119,Male,Information Technology,IT Helpdesk,2a,Lucas,Alcazar
+8,Lucas.Alcazar,8,7889,L6119,Male,Info Tech,IT Helpdesk,2a,Lucas,Alcazar
 9,Gustav.Cazar,9,1877,L3014,Male,Engineering,Hydraulic Technician,2b,Gustav,Cazar
 10,Ada.Campo-Corrente,10,8332,L2070,Female,Executive,SVP/CIO,1,Ada,Campo-Corrente
 11,Axel.Calzas,11,1321,L4149,Male,Engineering,Hydraulic Technician,1,Axel,Calzas
@@ -15,7 +15,7 @@ PersID,Name,Veh_ID,Credit,Loyalty,Gender,Department,Appt,Certainty ,FirstName,La
 14,Lidelse.Dedos,14,1874,L4424,Female,Engineering,Engineering Group Manager,1,Lidelse,Dedos
 15,Loreto.Bodrogi,15,3853,L1485,Male,Security,Site Control,1,Loreto,Bodrogi
 16,Isia.Vann,16,7354,L9254,Male,Security,Perimeter Control,2a,Isia,Vann
-17,Sven.Flecha,17,7384,L3800,Male,Information Technology,IT Technician,2a,Sven,Flecha
+17,Sven.Flecha,17,7384,L3800,Male,Info Tech,IT Technician,2a,Sven,Flecha
 18,Birgitta.Frente,18,9617,L5553,Female,Engineering,Geologist,1,Birgitta,Frente
 19,Vira.Frente,19,6895,L3366,Female,Engineering,Hydraulic Technician,1,Vira,Frente
 20,Stenig.Fusil,20,6816,L8148,Male,Security,Building Control,2a,Stenig,Fusil

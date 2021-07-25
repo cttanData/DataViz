@@ -1,12 +1,12 @@
 id,label,name,lcard,department,appt,VehID,Gender,FirstName,LastName
-1,9551,Nils.Calixto,L5777,Information Technology,IT Helpdesk,1,Male,Nils,Calixto
+1,9551,Nils.Calixto,L5777,Info Tech,IT Helpdesk,1,Male,Nils,Calixto
 2,1415,Lars.Azada,L7783,Engineering,Engineer,2,Male,Lars,Azada
 3,9635,Felix.Balas,L3191,Engineering,Engineer,3,Male,Felix,Balas
 4,7688,Ingrid.Barranco,L4164,Executive,SVP/CFO,4,Female,Ingrid,Barranco
-5,6899,Isak.Baza,L6267,Information Technology,IT Technician,5,Male,Isak,Baza
-6,7253,Linnea.Bergen,L1682,Information Technology,IT Group Manager,6,Female,Linnea,Bergen
+5,6899,Isak.Baza,L6267,Info Tech,IT Technician,5,Male,Isak,Baza
+6,7253,Linnea.Bergen,L1682,Info Tech,IT Group Manager,6,Female,Linnea,Bergen
 7,2540,Elsa.Orilla,L5947,Engineering,Drill Technician,7,Female,Elsa,Orilla
-8,7889,Lucas.Alcazar,L6119,Information Technology,IT Helpdesk,8,Male,Lucas,Alcazar
+8,7889,Lucas.Alcazar,L6119,Info Tech,IT Helpdesk,8,Male,Lucas,Alcazar
 9,1877,Gustav.Cazar,L3014,Engineering,Hydraulic Technician,9,Male,Gustav,Cazar
 10,8332,Ada.Campo-Corrente,L2070,Executive,SVP/CIO,10,Female,Ada,Campo-Corrente
 11,1321,Axel.Calzas,L4149,Engineering,Hydraulic Technician,11,Male,Axel,Calzas
@@ -15,7 +15,7 @@ id,label,name,lcard,department,appt,VehID,Gender,FirstName,LastName
 14,1874,Lidelse.Dedos,L4424,Engineering,Engineering Group Manager,14,Female,Lidelse,Dedos
 15,3853,Loreto.Bodrogi,L1485,Security,Site Control,15,Male,Loreto,Bodrogi
 16,7354,Isia.Vann,L9254,Security,Perimeter Control,16,Male,Isia,Vann
-17,7384,Sven.Flecha,L3800,Information Technology,IT Technician,17,Male,Sven,Flecha
+17,7384,Sven.Flecha,L3800,Info Tech,IT Technician,17,Male,Sven,Flecha
 18,9617,Birgitta.Frente,L5553,Engineering,Geologist,18,Female,Birgitta,Frente
 19,6895,Vira.Frente,L3366,Engineering,Hydraulic Technician,19,Female,Vira,Frente
 20,6816,Stenig.Fusil,L8148,Security,Building Control,20,Male,Stenig,Fusil
